@@ -20,7 +20,7 @@ package
 			
 			FP.screen.color = 0x000fff;
 			
-			//FP.world = new Portal();
+			FP.world = new GameWorld();
 			
 			//FP.console.enable(); FP.console.toggleKey = 188; // Con esto habilito la consola. Se activa con la tecla ',' (coma).
 		}
