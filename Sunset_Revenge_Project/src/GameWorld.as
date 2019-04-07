@@ -54,6 +54,8 @@ package
 		protected var backImage:Image;
 		protected var background:Entity;
 		protected var player:Player;
+		protected var enem:Enemy;
+
 
 		public function GameWorld() 
 		{
@@ -89,10 +91,11 @@ package
 			*/
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(200, 450);
-			
+			this.player = new Player(100, 450);
+			this.enem = new Enemy(550, 450);
 			this.add(background);
 			this.add(player);
+			this.add(enem);
 			/*
 			this.add(plataforma_a);
 			this.add(coin);
@@ -169,6 +172,7 @@ package
 			this.removeAll();
 			this.add(background);
 			this.add(player);
+			this.add(enem);
 			/*
 			if (player.isWin) this.add(signal);
 			
