@@ -12,7 +12,7 @@ package
 	public class Enemy extends Entity
 	{
 		
-		[Embed(source = "img/Enemies128x128.png")]
+		[Embed(source = "img/Enemies.png")]
 		private const ENEMI_ANIM:Class;
 		private var playerAnim:Spritemap;
 		public var isDead:Boolean;
@@ -30,7 +30,7 @@ package
 		
 		public function Enemy(px:Number = 0, py:Number = 0) 
 		{
-			playerAnim = new Spritemap(ENEMI_ANIM, 128, 128);
+			playerAnim = new Spritemap(ENEMI_ANIM, 180, 180);
 			playerAnim.add("stand", [7], 10, false);
 			playerAnim.add("walk", [0, 1, 2, 3,5], 10, false);
 			//playerAnim.add("crouch", [3], 10, false);
@@ -57,15 +57,13 @@ package
 			*/
 			//entersfx = new Sfx(ENTER_MP3);
   		}
-	
+		
+		public function run():void{
+			playerAnim.play("walk");
+			x-=10;
+		}
 		override public function update():void
 		{		
-			
-			if (Input.check(Key.L)){
-				playerAnim.play("walk");
-				x-=10;
-			
-			}
 			
 			/*
 			if (y < 450) {

@@ -12,7 +12,7 @@ package
 	public class Player extends Entity
 	{
 		
-		[Embed(source = "img/Player128x128.png")]
+		[Embed(source = "img/Player.png")]
 		private const PLAYER_ANIM:Class;
 		private var playerAnim:Spritemap;
 		public var isDead:Boolean;
@@ -30,7 +30,7 @@ package
 		
 		public function Player(px:Number = 0, py:Number = 0) 
 		{
-			playerAnim = new Spritemap(PLAYER_ANIM, 128, 128);
+			playerAnim = new Spritemap(PLAYER_ANIM, 170, 170);
 			playerAnim.add("stand", [0], 10, false);
 			playerAnim.add("walk", [0, 1, 2, 1], 10, true);
 			playerAnim.add("crouch", [3], 10, false);
@@ -56,14 +56,12 @@ package
 			//entersfx = new Sfx(ENTER_MP3);
   		}
 	
+		public function shoot():void{
+			playerAnim.play("range_atack");
+		}
 		override public function update():void
 		{		
-			
-			
-			
-			
-			
-			if (y < 450) {
+			if (y < 400) {
 				isGravity = true;
 			}
 			else {
@@ -87,8 +85,7 @@ package
 			
 			if (Input.check(Key.E))
 				playerAnim.play("melee_atack");
-			if (Input.check(Key.R))
-				playerAnim.play("range_atack");
+			
 			if (Input.check(Key.F))
 				playerAnim.play("special_atack");
 				

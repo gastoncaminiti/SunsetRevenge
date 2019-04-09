@@ -55,7 +55,9 @@ package
 		protected var background:Entity;
 		protected var player:Player;
 		protected var enem:Enemy;
-
+	
+		/* CONTENEDORES DE OBJETOS */
+		protected var projectiles:Array;
 
 		public function GameWorld() 
 		{
@@ -91,11 +93,15 @@ package
 			*/
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(100, 450);
-			this.enem = new Enemy(550, 450);
+			this.player = new Player(100, 300);
+			this.enem = new Enemy(550, 390);
 			this.add(background);
 			this.add(player);
 			this.add(enem);
+			
+			//Test de Agregado de proyectiles.
+			this.projectiles = new Array();
+			this.addList(projectiles);
 			/*
 			this.add(plataforma_a);
 			this.add(coin);
@@ -168,11 +174,26 @@ package
 			if (player.isReset)
 				FP.world = new GameWorld();
 			*/
+				
+			
+			if (Input.check(Key.L)){
+					this.enem.run();
+					this.projectiles.push(new Projectile(this.enem.x, this.enem.y + 50))
+			}
+			
+			if (Input.check(Key.R)) {
+				this.player.shoot();
+				this.projectiles.push(new Projectile(this.player.x + 50 , this.player.y + 50, false, 1));
+			}
+				
+			
 			super.update();
 			this.removeAll();
 			this.add(background);
+			this.addList(projectiles);
 			this.add(player);
 			this.add(enem);
+			
 			/*
 			if (player.isWin) this.add(signal);
 			
