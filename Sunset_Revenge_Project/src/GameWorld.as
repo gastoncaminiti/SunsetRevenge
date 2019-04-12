@@ -55,6 +55,7 @@ package
 		protected var background:Entity;
 		protected var player:Player;
 		protected var enem:Enemy;
+		protected var enem2:Enemy;
 	
 		/* CONTENEDORES DE OBJETOS */
 		protected var projectiles:Array;
@@ -95,9 +96,11 @@ package
 			background = new Entity(0, 0, backImage);
 			this.player = new Player(100, 300);
 			this.enem = new Enemy(550, 390);
+			this.enem2 = new Enemy(640, 390,1);
 			this.add(background);
 			this.add(player);
 			this.add(enem);
+			this.add(enem2);
 			
 			//Test de Agregado de proyectiles.
 			this.projectiles = new Array();
@@ -177,8 +180,21 @@ package
 				
 			
 			if (Input.check(Key.L)){
-					this.enem.run();
-					this.projectiles.push(new Projectile(this.enem.x, this.enem.y + 50))
+				this.enem.shoot();
+				this.projectiles.push(new Projectile(this.enem.x, this.enem.y + 50));
+				this.enem2.shoot();
+				this.projectiles.push(new Projectile(this.enem2.x, this.enem2.y + 50));
+			}
+			
+			if (Input.check(Key.K)){
+				this.enem.run();
+				this.enem2.run();
+			}
+			
+			
+			if (Input.check(Key.J)){
+				this.enem.shootDown();
+				this.enem2.shootDown();
 			}
 			
 			if (Input.check(Key.R)) {
@@ -193,6 +209,7 @@ package
 			this.addList(projectiles);
 			this.add(player);
 			this.add(enem);
+			this.add(enem2);
 			
 			/*
 			if (player.isWin) this.add(signal);

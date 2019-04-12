@@ -72,7 +72,7 @@ package
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete);
 			loader.load(request);
 			this.addChild(loader);          
-			trace("A");
+			//trace("A");
 		}
 		
 	}
