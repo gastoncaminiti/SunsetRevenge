@@ -2,14 +2,8 @@ package
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Spritemap;
-
-	/*
 	import net.flashpunk.FP;
- 	import net.flashpunk.masks.Hitbox;
-	import net.flashpunk.masks.Masklist;
-	import net.flashpunk.Mask;
-	*/
-	
+
 	public class People extends Entity
 	{
 		
@@ -36,8 +30,20 @@ package
 			  _peopleAnim.flipped = f;
 		}
 		
+		public function getFlip():Boolean{
+			  return _peopleAnim.flipped;
+		}
+		
 		public function setDirection(l:Boolean = false):void{
 			 _peopleToLeft = l;
+		}
+		
+		public function endAnimation():Boolean {
+			 return _peopleAnim.complete
+		}
+		
+		public function isAnimation(name:String):Boolean {
+			 return _peopleAnim.currentAnim == name;
 		}
 		
 		public function moveHorizontal(name:String,n:Number = 5):void{

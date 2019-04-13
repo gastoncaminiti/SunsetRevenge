@@ -1,40 +1,21 @@
 package 
 {
-	import net.flashpunk.Entity;
-	import net.flashpunk.graphics.Image;
 	import net.flashpunk.FP;
-	import net.flashpunk.utils.Key;
-	import net.flashpunk.utils.Input;
-	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Sfx;
- 	import net.flashpunk.masks.Hitbox;
-	import net.flashpunk.masks.Masklist;
-	import net.flashpunk.Mask;
+	import net.flashpunk.Entity;
+
 	
 	public class Enemy extends People
 	{
 		
 		[Embed(source = "img/Enemies.png")]
 		private const ENEMI_ANIM:Class;
+		
+		public  var _aura:Entity;
+		private var _shoot:Boolean;
+		private var _firerate:Number;
+		private var _clockfire:Number;
 
-		public var isDead:Boolean;
-		public var isLeft:Boolean;
-		public var isWin:Boolean;
-		public var isCarrot:Boolean;
-		public var isJump:Boolean;
-		public var isReset:Boolean;
-		private var isGravity:Boolean;
-		
-		public var h1:Hitbox;
-		public var h2:Hitbox;
-		public var m:Masklist;
-		
-		/*
-		[Embed(source = "sound/coin.mp3")]	
-		protected const ENTER_MP3:Class;
-		protected var entersfx:Sfx;
-		*/
-		
 		public function Enemy(px:Number = 0, py:Number = 0, t:Number = 0) 
 		{
 			super(px, py, ENEMI_ANIM, 180, 180, "Enemy");
@@ -50,6 +31,12 @@ package
 				addAnimation("shootdown", [19, 18,19], 8, false);
 			}
 			playAnimation("stand");
+			_aura = new Entity(px, py);
+			_aura.setHitbox(400, 100,px - px/2,0);
+			_aura.type = "aura";
+			_shoot = false;
+			_firerate = 10;
+			_clockfire = 0;
   		}
 		
 		public function run():void {
@@ -58,17 +45,39 @@ package
 		
 		public function shoot():void {
 			playAnimation("shoot");
+			_shoot = true;
 		}
 		
 		public function shootDown():void {
 			playAnimation("shootdown");
+			_shoot = true;
+		}
+		
+		public function isTouchAura():Boolean {
+			return _aura.collide("Player", _aura.x, _aura.y) as People;
+		}
+		
+		public function canShoot():Boolean {
+			return !_shoot;
 		}
 		
 		override public function update():void
 		{		
+			_aura.x = x;
+			_aura.y = y;
 			
+			if (!isTouchAura())
+				playAnimation("stand");
+
+			if (_shoot) 
+				_clockfire++;
+				
+			if (_clockfire == _firerate){
+				_shoot = false;
+				_clockfire = 0;
+			}
 		}
-		
+
 	}
 
 }

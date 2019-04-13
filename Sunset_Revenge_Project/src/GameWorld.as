@@ -96,7 +96,7 @@ package
 			background = new Entity(0, 0, backImage);
 			this.player = new Player(100, 300);
 			this.enem = new Enemy(550, 390);
-			this.enem2 = new Enemy(640, 390,1);
+			this.enem2 = new Enemy(640, 250,1);
 			this.add(background);
 			this.add(player);
 			this.add(enem);
@@ -179,9 +179,12 @@ package
 			*/
 				
 			
-			if (Input.check(Key.L)){
+			if (enem.isTouchAura() && enem.canShoot()){
 				this.enem.shoot();
 				this.projectiles.push(new Projectile(this.enem.x, this.enem.y + 50));
+			}
+			
+			if (enem2.isTouchAura() && enem2.canShoot()){
 				this.enem2.shoot();
 				this.projectiles.push(new Projectile(this.enem2.x, this.enem2.y + 50));
 			}
@@ -197,12 +200,34 @@ package
 				this.enem2.shootDown();
 			}
 			
-			if (Input.check(Key.R)) {
-				this.player.shoot();
-				this.projectiles.push(new Projectile(this.player.x + 50 , this.player.y + 50, false, 1));
+			if (!Input.check(Key.ANY) && player.isWalk())
+				player.stand();
+
+			if (!Input.check(Key.ANY) && player.endAnimation())
+				player.stand();
+			else {
+				if (Input.check(Key.A))
+					player.walkLeft();
+				if (Input.check(Key.D))
+					player.walkRight();
+				if (Input.check(Key.S))
+					player.crouch();		
+				if (Input.check(Key.Q))
+					player.block();
+				if (Input.check(Key.W))
+					player.jump();
+				if (Input.check(Key.E))
+					player.atack();
+				if (Input.check(Key.F)) {
+					this.projectiles.push(new Projectile(this.player.x + 120 , this.player.y + 50, false, 1));
+					player.shoot();
+				}
+				if (Input.check(Key.R)){
+					player.specialatack();	
+					this.projectiles.push(new Projectile(this.player.x + 120 , this.player.y + 50, false, 1));
+				}
 			}
-				
-			
+	
 			super.update();
 			this.removeAll();
 			this.add(background);
@@ -210,6 +235,8 @@ package
 			this.add(player);
 			this.add(enem);
 			this.add(enem2);
+			this.add(enem._aura);
+			this.add(enem2._aura);
 			
 			/*
 			if (player.isWin) this.add(signal);
