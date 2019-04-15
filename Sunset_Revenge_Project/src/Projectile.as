@@ -18,55 +18,55 @@ package
 		private const KNIFE_IMG:Class;
 		
 		private var projectileImage:Image;
-		public var isShoot:Boolean;
-		public var timeShoot:Number;
-		public var controlTimer:Number;
-		public var dir:Number;
-		public var isBullet:Boolean;
+
+		public var _remote:Boolean;
+		public var _directionL:Boolean;
+		public var _targetx:Number;
+		public var _targety:Number;
 			
-		public function Projectile(px:Number = 0, py:Number = 0,pt:Boolean = true,pd:Number = 0) 
+		public function Projectile(px:Number = 0, py:Number = 0, pt:Number = 0) 
 		{
-			projectileImage = pt ? new Image(BULLET_IMG) : new Image(KNIFE_IMG);
+			projectileImage = pt ? new Image(KNIFE_IMG) : new Image(BULLET_IMG);
 			super(px, py, projectileImage);
-			isShoot = false;
 			setHitbox(17,10,10,0)
 			type = "Bullet";
-			timeShoot =  4;
-			controlTimer = 0;
-			dir = pd;
+			_remote = false;
+			_targetx = 0;
+			_targety = 0;
+		}
+		
+		public function setRemote(b:Boolean):void {
+			_remote = b;
+		}
+		
+		public function setDirection(d:Boolean):void {
+			_directionL= d;
+		}
+		
+		public function setFlip(f:Boolean):void {
+			projectileImage.flipped = f;
+		}
+		
+		public function setTarget(px:Number = 0, py:Number = 0):void {
+			_targetx = px - x;
+			_targety = py - y;
+			projectileImage.angle = FP.angle(px, py, x, y);
+		
 		}
 		
 		override public function update():void
-		{			
-			if (dir)
-				x += 250 * FP.elapsed;
-			else
-				x -= 250 * FP.elapsed;
-			/*
-			trace(controlTimer);
-			if (isShoot) {
-				x -= 250 * FP.elapsed;
-			}
-			else {
-				controlTimer++;
-				x = this.x + 100;
-			}
-				
-			if (x < 0)
-				isShoot = false;
+		{		
 			
-			if (Bullet.collide("Barbara", Bullet.x, Bullet.y)) {
-				isShoot = false;
+			if (_remote) {
+				x += Math.cos(Math.atan2(_targety,_targetx))  * 300 * FP.elapsed;
+				y += Math.sin(Math.atan2(_targety, _targetx)) * 300 * FP.elapsed;
+			}else {
+				if (_directionL)
+					x -= 250 * FP.elapsed;
+				else
+					x += 250 * FP.elapsed;
 			}
-			
-			
-			if (controlTimer == timeShoot) {
-				//enemyAnim.play("attack", true);
-				controlTimer = 0;
-				isShoot = true;
-			}
-			*/
-			
+		
 		}
 		
 	}

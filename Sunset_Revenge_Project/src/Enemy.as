@@ -16,28 +16,32 @@ package
 		private var _firerate:Number;
 		private var _clockfire:Number;
 
-		public function Enemy(px:Number = 0, py:Number = 0, t:Number = 0) 
+		public function Enemy(px:Number = 0, py:Number = 0, ax:Number = 200, ay:Number = 200, t:Number = 0) 
 		{
 			super(px, py, ENEMI_ANIM, 180, 180, "Enemy");
 			if (t){
 				addAnimation("stand", [7], 10, false);
 				addAnimation("walk", [0, 1, 2, 3, 4, 5], 12, false);
-				addAnimation("shoot", [6, 5], 8, false);
-				addAnimation("shootdown", [9, 8,9], 8, false);
+				addAnimation("shoot", [6, 5], 5, false);
+				addAnimation("shootdown", [8], 5, false);
 			}else {
 				addAnimation("stand", [17], 10, false);
 				addAnimation("walk", [10, 11, 12, 13, 14, 15], 12, false);
-				addAnimation("shoot", [16, 15], 8, false);
-				addAnimation("shootdown", [19, 18,19], 8, false);
+				addAnimation("shoot", [16, 15], 5, false);
+				addAnimation("shootdown", [18], 5, false);
 			}
 			playAnimation("stand");
-			_aura = new Entity(px, py);
-			_aura.setHitbox(400, 100,px - px/2,0);
+			_aura = new Entity(x, y);
+			_aura.setHitbox(ax, ay,ax/2,0);
 			_aura.type = "aura";
 			_shoot = false;
-			_firerate = 10;
+			_firerate = 18;
 			_clockfire = 0;
   		}
+ 
+		public function stand():void{
+			playAnimation("stand");
+		}
 		
 		public function run():void {
 			moveHorizontal("walk",30);

@@ -59,6 +59,7 @@ package
 	
 		/* CONTENEDORES DE OBJETOS */
 		protected var projectiles:Array;
+		private var _aux_projectile:Projectile;
 
 		public function GameWorld() 
 		{
@@ -94,9 +95,9 @@ package
 			*/
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(100, 300);
-			this.enem = new Enemy(550, 390);
-			this.enem2 = new Enemy(640, 250,1);
+			this.player = new Player(100, 440);
+			this.enem = new Enemy(400, 180,220,300);
+			this.enem2 = new Enemy(640, 180,220,300,1);
 			this.add(background);
 			this.add(player);
 			this.add(enem);
@@ -178,15 +179,24 @@ package
 				FP.world = new GameWorld();
 			*/
 				
+			if (!enem.canShoot() && enem.endAnimation())
+				this.enem.stand();
+			if (!enem2.canShoot() && enem2.endAnimation())
+				this.enem2.stand();
 			
 			if (enem.isTouchAura() && enem.canShoot()){
 				this.enem.shoot();
-				this.projectiles.push(new Projectile(this.enem.x, this.enem.y + 50));
+				_aux_projectile = new Projectile(this.enem.x, this.enem.y + 50);
+				_aux_projectile.setDirection(true);
+				this.projectiles.push(_aux_projectile);
 			}
 			
 			if (enem2.isTouchAura() && enem2.canShoot()){
-				this.enem2.shoot();
-				this.projectiles.push(new Projectile(this.enem2.x, this.enem2.y + 50));
+				this.enem2.shootDown();
+				_aux_projectile = new Projectile(this.enem2.x + 15, this.enem2.y + 100);
+				_aux_projectile.setRemote(true);
+				_aux_projectile.setTarget(player.x + 90,player.y);
+				this.projectiles.push(_aux_projectile);
 			}
 			
 			if (Input.check(Key.K)){
@@ -219,12 +229,14 @@ package
 				if (Input.check(Key.E))
 					player.atack();
 				if (Input.check(Key.F)) {
-					this.projectiles.push(new Projectile(this.player.x + 120 , this.player.y + 50, false, 1));
 					player.shoot();
+					_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
+					this.projectiles.push(_aux_projectile);
 				}
 				if (Input.check(Key.R)){
 					player.specialatack();	
-					this.projectiles.push(new Projectile(this.player.x + 120 , this.player.y + 50, false, 1));
+					_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
+					this.projectiles.push(_aux_projectile);
 				}
 			}
 	
