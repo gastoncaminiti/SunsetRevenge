@@ -24,11 +24,13 @@ package
 				addAnimation("walk", [0, 1, 2, 3, 4, 5], 12, false);
 				addAnimation("shoot", [6, 5], 5, false);
 				addAnimation("shootdown", [8], 5, false);
+				addAnimation("dead", [35,36], 5, false);
 			}else {
 				addAnimation("stand", [17], 10, false);
 				addAnimation("walk", [10, 11, 12, 13, 14, 15], 12, false);
 				addAnimation("shoot", [16, 15], 5, false);
 				addAnimation("shootdown", [18], 5, false);
+				addAnimation("dead", [37,38], 5, false);
 			}
 			playAnimation("stand");
 			_aura = new Entity(x, y);
@@ -37,6 +39,7 @@ package
 			_shoot = false;
 			_firerate = 18;
 			_clockfire = 0;
+			setLife(3);
   		}
  
 		public function stand():void{
@@ -65,12 +68,24 @@ package
 			return !_shoot;
 		}
 		
+		public function hurt():void {
+			setLife(getLife() - 1);
+		}
+		
+		public function isHurt():void {
+			var p:Projectile = isTouchProjectile("Knife");
+			if (p) {
+				hurt();
+				p.destroy();
+			}
+		}
+		
 		override public function update():void
 		{		
 			_aura.x = x;
 			_aura.y = y;
 			
-			if (!isTouchAura())
+			if (!isTouchAura() && !isDead())
 				playAnimation("stand");
 
 			if (_shoot) 
@@ -80,6 +95,18 @@ package
 				_shoot = false;
 				_clockfire = 0;
 			}
+			
+			isHurt();
+			
+			if (isDead()){
+				playAnimation("dead");
+				if (collidable) {
+					x -= 20;
+					y -= 5;
+					collidable = false;
+					_aura.collidable = false;
+				}
+			}	
 		}
 
 	}

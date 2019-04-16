@@ -13,10 +13,13 @@ package
 	public class GameWorld extends World
 	{
 		
-		/*
-		[Embed(source="font/rocknroll.ttf", fontFamily="Roll",embedAsCFF="false")]  
-		public static var FONT_TITLE:Class;  
 		
+		[Embed(source="font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
+		public static var FONT_TITLE:Class;  
+
+		protected var _infotext:Text;
+		
+		/*
 		[Embed(source="img/backgroundD.png")]
 		protected const BACKD_IMG:Class;
 		[Embed(source="img/backgroundN.png")]
@@ -41,7 +44,7 @@ package
 		protected var textTime:String;
 		protected var day:Number;
 		
-		protected var info_text:Text;
+		
 		protected var signal:Signal;
 		
 
@@ -82,12 +85,7 @@ package
 			this.planta1 = new GrupoPlantas(385, 435, 270);
 			this.textTime = "Mañana";
 			
-			info_text = new Text("Día "+int(day)+" - "+textTime, 0, 0, 600,50);
-			info_text.x = 25;
-			info_text.y = 20; 
-			info_text.color = 0x231f1f;
-			info_text.font = "Roll";
-			info_text.size = 50;
+			
 
 			musfx = new Sfx(MUS_MP3);
 			musfx.play();
@@ -97,11 +95,20 @@ package
 			background = new Entity(0, 0, backImage);
 			this.player = new Player(100, 440);
 			this.enem = new Enemy(400, 180,220,300);
-			this.enem2 = new Enemy(640, 180,220,300,1);
+			this.enem2 = new Enemy(640, 180, 220, 300, 1);
+			
+			_infotext = new Text("Hola Mundo", 0, 0, 600,50);
+			_infotext.x = 25;
+			_infotext.y = 20; 
+			_infotext.color = 0x231f1f;
+			_infotext.font = "West";
+			_infotext.size = 40;
+			
 			this.add(background);
 			this.add(player);
 			this.add(enem);
 			this.add(enem2);
+			this.addGraphic(_infotext);
 			
 			//Test de Agregado de proyectiles.
 			this.projectiles = new Array();
@@ -179,9 +186,9 @@ package
 				FP.world = new GameWorld();
 			*/
 				
-			if (!enem.canShoot() && enem.endAnimation())
+			if (!enem.canShoot() && enem.endAnimation() && !enem.isDead())
 				this.enem.stand();
-			if (!enem2.canShoot() && enem2.endAnimation())
+			if (!enem2.canShoot() && enem2.endAnimation()&& !enem2.isDead())
 				this.enem2.stand();
 			
 			if (enem.isTouchAura() && enem.canShoot()){
@@ -210,6 +217,7 @@ package
 				this.enem2.shootDown();
 			}
 			
+			if(!player.isDead()){
 			if (!Input.check(Key.ANY) && player.isWalk())
 				player.stand();
 
@@ -239,17 +247,17 @@ package
 					this.projectiles.push(_aux_projectile);
 				}
 			}
-	
+			}
 			super.update();
 			this.removeAll();
 			this.add(background);
 			this.addList(projectiles);
-			this.add(player);
 			this.add(enem);
 			this.add(enem2);
 			this.add(enem._aura);
 			this.add(enem2._aura);
-			
+			this.add(player);
+			this.addGraphic(_infotext);
 			/*
 			if (player.isWin) this.add(signal);
 			

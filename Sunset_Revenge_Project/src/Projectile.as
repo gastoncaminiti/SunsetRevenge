@@ -28,8 +28,11 @@ package
 		{
 			projectileImage = pt ? new Image(KNIFE_IMG) : new Image(BULLET_IMG);
 			super(px, py, projectileImage);
-			setHitbox(17,10,10,0)
-			type = "Bullet";
+			if(pt)
+				setHitbox(40, 10, 0, 0);
+			else
+				setHitbox(20, 10, 10, 0);
+			type = pt ? "Knife" :"Bullet";
 			_remote = false;
 			_targetx = 0;
 			_targety = 0;
@@ -51,7 +54,6 @@ package
 			_targetx = px - x;
 			_targety = py - y;
 			projectileImage.angle = FP.angle(px, py, x, y);
-		
 		}
 		
 		override public function update():void
@@ -67,6 +69,12 @@ package
 					x += 250 * FP.elapsed;
 			}
 		
+		}
+		
+		public function destroy():void
+		{
+			// Here we could place specific destroy-behavior for the Bullet.
+			FP.world.remove(this);
 		}
 		
 	}

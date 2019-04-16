@@ -22,10 +22,11 @@ package
 			addAnimation("melee_atack", [0, 4, 0], 10, false);
 			addAnimation("range_atack", [0, 5, 6], 10, false);
 			addAnimation("special_atack", [8,9,10,11], 10, true);
-			addAnimation("dead", [12,13,14], 8, false);
+			addAnimation("dead", [12,13], 0.5, false);
 			addAnimation("win", [15,16], 8, false);
 			playAnimation("stand");
 			setFlip(true);
+			setLife(3);
   		}
  
 		public function stand():void{
@@ -73,8 +74,29 @@ package
 			return isAnimation("walk");
 		}
 		
+		public function hurt():void {
+			setLife(getLife() - 1);
+		}
+		
+		public function isHurt():void {
+			var p:Projectile = isTouchProjectile("Bullet");
+			if (p) {
+				hurt();
+				p.destroy();
+			}
+		}
+		
 		override public function update():void
 		{	
+			isHurt();
+			if (isDead()) {
+				playAnimation("dead");
+				if (collidable) {
+					x -= 20;
+					y -= 5;
+					collidable = false;
+				}
+			}
 			/*
 			if (y < 400) {
 				isGravity = true;
