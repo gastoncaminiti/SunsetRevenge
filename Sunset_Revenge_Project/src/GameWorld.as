@@ -14,11 +14,6 @@ package
 	{
 		
 		
-		[Embed(source="font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
-		public static var FONT_TITLE:Class;  
-
-		protected var _infotext:Text;
-		
 		/*
 		[Embed(source="img/backgroundD.png")]
 		protected const BACKD_IMG:Class;
@@ -63,7 +58,16 @@ package
 		/* CONTENEDORES DE OBJETOS */
 		protected var projectiles:Array;
 		private var _aux_projectile:Projectile;
-
+		
+		/* HUB */
+		[Embed(source="font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
+		public static var FONT_TITLE:Class;  
+		protected var _infotext:Text;
+		[Embed(source="img/HUBborder.png")]
+		protected const BORDER_IMG:Class;
+		protected var _bordertext:Entity;
+		protected var _borderImage :Image;
+		
 		public function GameWorld() 
 		{
 			/*
@@ -97,15 +101,16 @@ package
 			this.enem = new Enemy(400, 180,220,300);
 			this.enem2 = new Enemy(640, 180, 220, 300, 1);
 			
-			_infotext = new Text("Hola Mundo", 0, 0, 600,50);
-			_infotext.x = 25;
-			_infotext.y = 20; 
-			_infotext.color = 0x231f1f;
+			_infotext = new Text(" "+ Datamanager.getScore() , 28, 28, 300,50);
+			_infotext.color = 0x532100;
 			_infotext.font = "West";
-			_infotext.size = 40;
+			_infotext.size = 26;
+			_borderImage = new Image(BORDER_IMG);
+			_bordertext = new Entity(5, 5, _borderImage);
 			
 			this.add(background);
 			this.add(player);
+			this.add(_bordertext);
 			this.add(enem);
 			this.add(enem2);
 			this.addGraphic(_infotext);
@@ -218,45 +223,50 @@ package
 			}
 			
 			if(!player.isDead()){
-			if (!Input.check(Key.ANY) && player.isWalk())
-				player.stand();
+				if (!Input.check(Key.ANY) && player.isWalk())
+					player.stand();
 
-			if (!Input.check(Key.ANY) && player.endAnimation())
-				player.stand();
-			else {
-				if (Input.check(Key.A))
-					player.walkLeft();
-				if (Input.check(Key.D))
-					player.walkRight();
-				if (Input.check(Key.S))
-					player.crouch();		
-				if (Input.check(Key.Q))
-					player.block();
-				if (Input.check(Key.W))
-					player.jump();
-				if (Input.check(Key.E))
-					player.atack();
-				if (Input.check(Key.F)) {
-					player.shoot();
-					_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
-					this.projectiles.push(_aux_projectile);
-				}
-				if (Input.check(Key.R)){
-					player.specialatack();	
-					_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
-					this.projectiles.push(_aux_projectile);
+				if (!Input.check(Key.ANY) && player.endAnimation())
+					player.stand();
+				else {
+					if (Input.check(Key.A))
+						player.walkLeft();
+					if (Input.check(Key.D))
+						player.walkRight();
+					if (Input.check(Key.S))
+						player.crouch();		
+					if (Input.check(Key.Q))
+						player.block();
+					if (Input.check(Key.W))
+						player.jump();
+					if (Input.check(Key.E))
+						player.atack();
+					if (Input.check(Key.F)) {
+						player.shoot();
+						_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
+						this.projectiles.push(_aux_projectile);
+					}
+					if (Input.check(Key.R)){
+						player.specialatack();	
+						_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
+						this.projectiles.push(_aux_projectile);
+					}
 				}
 			}
-			}
+			
+			_infotext.text = "Score:"+ Datamanager.getScore();
+			
 			super.update();
 			this.removeAll();
 			this.add(background);
+			this.add(_bordertext);
 			this.addList(projectiles);
 			this.add(enem);
 			this.add(enem2);
 			this.add(enem._aura);
 			this.add(enem2._aura);
 			this.add(player);
+			this.add(player._shield);
 			this.addGraphic(_infotext);
 			/*
 			if (player.isWin) this.add(signal);

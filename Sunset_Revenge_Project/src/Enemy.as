@@ -77,6 +77,7 @@ package
 			if (p) {
 				hurt();
 				p.destroy();
+				Datamanager.addScore(100);
 			}
 		}
 		
