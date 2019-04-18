@@ -79,6 +79,11 @@ package
 				p.destroy();
 				Datamanager.addScore(100);
 			}
+			
+			if (collide("shield", x, y)) {
+				hurt();
+				Datamanager.addScore(500);
+			}
 		}
 		
 		override public function update():void

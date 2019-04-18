@@ -241,15 +241,47 @@ package
 						player.jump();
 					if (Input.check(Key.E))
 						player.atack();
-					if (Input.check(Key.F)) {
+					if (Input.check(Key.F) && player.canShoot()) {
 						player.shoot();
 						_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
 						this.projectiles.push(_aux_projectile);
 					}
-					if (Input.check(Key.R)){
+					if (Input.check(Key.R) && player.canSpecial()){
 						player.specialatack();	
-						_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
+						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(player.x + 85, 0);
 						this.projectiles.push(_aux_projectile);
+						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(player.x + 85,600);
+						this.projectiles.push(_aux_projectile);
+						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(0,player.y + 85);
+						this.projectiles.push(_aux_projectile);
+						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(800,player.y + 85);
+						this.projectiles.push(_aux_projectile);
+						/*----------------*/
+						_aux_projectile = new Projectile(this.player.x + 60, this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(-85, 0);
+						this.projectiles.push(_aux_projectile);
+						_aux_projectile = new Projectile(this.player.x + 60 , this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(0,600);
+						this.projectiles.push(_aux_projectile);
+						_aux_projectile = new Projectile(this.player.x + 60 , this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(800,0);
+						this.projectiles.push(_aux_projectile);
+						_aux_projectile = new Projectile(this.player.x + 60 , this.player.y + 85, 1);
+						_aux_projectile.setRemote(true);
+						_aux_projectile.setTarget(800,600);
+						this.projectiles.push(_aux_projectile);
+						
 					}
 				}
 			}
