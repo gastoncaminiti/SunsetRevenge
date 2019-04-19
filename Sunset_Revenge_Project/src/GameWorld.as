@@ -12,30 +12,7 @@ package
 	
 	public class GameWorld extends World
 	{
-		
-		
 		/*
-		[Embed(source="img/backgroundD.png")]
-		protected const BACKD_IMG:Class;
-		[Embed(source="img/backgroundN.png")]
-		protected const BACKN_IMG:Class;
-		protected var backDImage:Image;
-		protected var backNImage:Image;
-		protected var background:Entity;
-		
-		protected var plataforma_a:Plataforma;
-		protected var coin:Coin;
-		
-		protected var sol:Sol;
-		protected var luna:Luna;
-		protected var planta1:GrupoPlantas;
-		
-		protected var isDay:Boolean;
-		protected var isChange:Boolean;
-		protected var isAdd:Boolean;
-		protected var nChange:Number;
-		protected var timeChange:Number;
-		
 		protected var textTime:String;
 		protected var day:Number;
 		
@@ -59,6 +36,9 @@ package
 		protected var projectiles:Array;
 		private var _aux_projectile:Projectile;
 		
+		/* CONTENEDORES DE PLATAFORMAS */
+		protected var  platforms:Array;
+		
 		/* HUB */
 		[Embed(source="font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
 		public static var FONT_TITLE:Class;  
@@ -72,29 +52,13 @@ package
 		{
 			/*
 
-			background = new Entity(0, 0, backDImage);
-			this.plataforma_a = new Plataforma(140, 400);
-			this.coin = new Coin(550, 360);
-			
-			this.sol = new Sol(600, 50);
-			this.luna = new Luna(600, 50);
 			this.signal = new Signal(700, 250);
-			this.nChange = 0;
-			this.isDay = true;
-			this.isAdd = false;
-			this.isChange = false;
-			this.timeChange = 0;
-			this.day = 1;
-			this.luna.visible = false;
-			this.planta1 = new GrupoPlantas(385, 435, 270);
-			this.textTime = "Mañana";
 			
-			
-
 			musfx = new Sfx(MUS_MP3);
 			musfx.play();
 			musfx.loop();
 			*/
+			
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
 			this.player = new Player(100, 440);
@@ -118,75 +82,18 @@ package
 			//Test de Agregado de proyectiles.
 			this.projectiles = new Array();
 			this.addList(projectiles);
-			/*
-			this.add(plataforma_a);
-			this.add(coin);
-			this.add(sol);
-			this.add(luna);
-			this.addList(planta1.partes);
-			this.addGraphic(info_text);
-			*/
+			//Test de Agregado de Plataformas.
+			this.platforms = new Array();
+			this.platforms.push(new Platform(0, 340, 800, 20));
+			this.platforms.push(new Platform(0, 500, 800, 20));
+			this.addList(platforms);
 		}
 		
 		override public function update():void
 		{
 			/*
 			musfx.volume = 0.2;
-			if (Input.check(Key.Q) && !isChange && day !=1) {
-				if (isDay)
-					isDay = false;
-				else
-					isDay = true;
-				isChange = true;
-				nChange++;
-				isAdd = false;
-				if (day != 0) day -= 0.5;
-			}
-			
-			if (Input.check(Key.E) && !isChange) {
-				if (isDay)
-					isDay = false;
-				else
-					isDay = true;
-				isChange = true;
-				nChange++;
-				isAdd = true;
-				day += 0.5;
-			}
 
-			if (isChange)
-				timeChange+= FP.elapsed;
-			
-			if (isDay && timeChange  >= 0.5) {
-				isChange = false;
-				background.graphic = backDImage;
-				timeChange = 0;
-				this.textTime = "Mañana";
-				this.sol.visible = true;
-				this.luna.visible = false;
-				if (isAdd)
-					planta1.addPlant();
-				else
-					planta1.popPlant();
-					
-				info_text.text = "Día " + int(day) + " -  " + textTime;
-			}
-			
-			if (!isDay && timeChange >= 0.5) {
-				isChange = false;
-				background.graphic = backNImage;
-				timeChange = 0;
-				this.textTime = "Noche";
-				this.sol.visible = false;
-				this.luna.visible = true;
-				if (isAdd)
-					planta1.addPlant();
-				else
-					planta1.popPlant();
-					
-				info_text.text = "Día " + int(day) + " -  " + textTime;
-			}
-			
 			if (player.isReset)
 				FP.world = new GameWorld();
 			*/
@@ -229,21 +136,23 @@ package
 				if (!Input.check(Key.ANY) && player.endAnimation())
 					player.stand();
 				else {
-					if (Input.check(Key.A))
+					if (Input.check(Key.LEFT))
 						player.walkLeft();
-					if (Input.check(Key.D))
+					if (Input.check(Key.RIGHT))
 						player.walkRight();
-					if (Input.check(Key.S))
-						player.crouch();		
+					if (Input.check(Key.DOWN))
+						player.crouch();	
+					if (Input.check(Key.UP))
+						player.jump();
 					if (Input.check(Key.Q))
 						player.block();
 					if (Input.check(Key.W))
-						player.jump();
-					if (Input.check(Key.E))
 						player.atack();
-					if (Input.check(Key.F) && player.canShoot()) {
+					if (Input.check(Key.E) && player.canShoot()) {
 						player.shoot();
-						_aux_projectile = new Projectile(this.player.x + 120 , this.player.y + 50, 1);
+						_aux_projectile = new Projectile(player.getFlip() ? this.player.x + 130 : this.player.x - 5 , this.player.y + 60, 1);
+						_aux_projectile.setFlip(player.getFlip());
+						_aux_projectile.setDirection(!player.getFlip());
 						this.projectiles.push(_aux_projectile);
 					}
 					if (Input.check(Key.R) && player.canSpecial()){
@@ -293,6 +202,7 @@ package
 			this.add(background);
 			this.add(_bordertext);
 			this.addList(projectiles);
+			this.addList(platforms);
 			this.add(enem);
 			this.add(enem2);
 			this.add(enem._aura);

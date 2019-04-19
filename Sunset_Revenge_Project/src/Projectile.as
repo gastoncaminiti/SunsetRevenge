@@ -29,7 +29,7 @@ package
 			projectileImage = pt ? new Image(KNIFE_IMG) : new Image(BULLET_IMG);
 			super(px, py, projectileImage);
 			if(pt)
-				setHitbox(40, 10, 0, 0);
+				setHitbox(68, 12, 0, 0);
 			else
 				setHitbox(20, 10, 10, 0);
 			type = pt ? "Knife" :"Bullet";

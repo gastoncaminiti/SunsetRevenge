@@ -55,7 +55,6 @@ package
 			setFlip(false);
 			setDirection(false);
 			_shield.collidable = false;
-			_shield.setHitbox(20, 100, -20, -24);
 			setHitbox(34, 136, -56,-28);
 			moveHorizontal("walk",10);
 		}
@@ -64,7 +63,6 @@ package
 			setFlip(true);
 			setDirection(true);
 			_shield.collidable = false;
-			_shield.setHitbox(20, 100, -120, -24);
 			setHitbox(34, 136, -56,-28);
 			moveHorizontal("walk",10);
 		}
@@ -84,6 +82,11 @@ package
 		
 		public function block():void {
 			_shield.collidable = true;
+			if (getFlip())
+				_shield.setHitbox(20, 100, -120, -24);
+			else
+				_shield.setHitbox(20, 100, -20, -24);
+			
 			playAnimation("block");
 		}
 		
@@ -92,9 +95,13 @@ package
 			playAnimation("crouch");
 		}
 
-		public function jump():void{
-			y -= 50;
-			playAnimation("jump");
+		public function jump():void {
+			if(getJump()){
+				playAnimation("jump");
+				y -= 180;
+				setJump(false);
+			}
+			
 		}
 
 		public function atack():void {
@@ -136,6 +143,17 @@ package
 			}
 		}
 		
+		public function isFloor():void {
+			var p:Platform = isTouchFloor("Platform");
+			if (p) {
+				setGravity(false);
+				setJump(true);
+				y = p.y - 140;
+			}
+			else 
+				setGravity(true);
+		}
+		
 		override public function update():void
 		{	
 			_shield.x = x;
@@ -152,6 +170,12 @@ package
 			
 			isHurt();
 			isBlock();
+			isFloor();
+			
+			if (getGravity() && !isAnimation("special_atack")) {
+				y += 5;
+				playAnimation("jump");
+			}
 			
 			if (isDead()) {
 				playAnimation("dead");
@@ -162,33 +186,7 @@ package
 					_shield.collidable = false;
 				}
 			}
-			/*
-			if (y < 400) {
-				isGravity = true;
-			}
-			else {
-				isGravity = false;
-			}
-				
-			if (isGravity) {
-					y+=10;
-			}		
 			
-			if (this.collide("planta", this.x, this.y)) {
-				isGravity = false;
-			}
-			
-			if (!this.collide("planta", this.x, this.y) && !this.collide("plataforma", this.x, this.y))
-				isGravity = true;
-			
-			if (this.collide("coin", this.x, this.y)) {
-				entersfx.play();
-				isWin = true;
-			}
-
-			if (y >= 600)
-				isReset = true;
-			*/	
 		}
 		
 	}
