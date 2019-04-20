@@ -24,7 +24,7 @@ package
 		protected const MUS_MP3:Class;
 		protected var musfx:Sfx;
 		*/
-		[Embed(source="img/Background_Nivel0.png")]
+		[Embed(source="img/Level1Map.png")]
 		protected const BACK_IMG:Class;
 		protected var backImage:Image;
 		protected var background:Entity;
@@ -61,7 +61,7 @@ package
 			
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(100, 440);
+			this.player = new Player(100, 380);
 			this.enem = new Enemy(400, 180,220,300);
 			this.enem2 = new Enemy(640, 180, 220, 300, 1);
 			
@@ -84,8 +84,8 @@ package
 			this.addList(projectiles);
 			//Test de Agregado de Plataformas.
 			this.platforms = new Array();
-			this.platforms.push(new Platform(0, 340, 800, 20));
-			this.platforms.push(new Platform(0, 500, 800, 20));
+			this.platforms.push(new Platform(0, 400, 6000, 20));
+			this.platforms.push(new Platform(0, 1180, 6600, 20));
 			this.addList(platforms);
 		}
 		
@@ -196,6 +196,11 @@ package
 			}
 			
 			_infotext.text = "Score:"+ Datamanager.getScore();
+			
+			FP.camera.setTo(player.x < 90 ? 0: player.x - 100, player.y < 800 ? 0 : 800);
+			//FP.camera.y = player.y;
+			// Prevent the camera from going past the map.
+			//FP.camera.x = FP.clamp(FP.camera.x, 0, 3300- FP.screen.width);
 			
 			super.update();
 			this.removeAll();

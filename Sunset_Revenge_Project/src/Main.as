@@ -24,17 +24,19 @@ package
 		
 		public function Main():void
 		{
-			initKongregateAPI();
-			
-			super(800, 600, 30, false);
-			
-			FP.screen.color = 0x000fff;
-			
-			FP.world = new GameWorld();
-			
+			super(800, 600, 60);
 			FP.console.enable(); FP.console.toggleKey = 188; // Con esto habilito la consola. Se activa con la tecla ',' (coma).
 		}
 		
+		override public function init():void
+		{
+			//FP.screen.scale = 2;
+			FP.screen.color = 0x2c4e68;
+			trace("FlashPunk started.");
+			FP.world = new GameWorld();
+			initKongregateAPI();
+			super.init();
+		}
 	
 		private function loadComplete(event:Event):void {
 			// Save Kongregate API reference

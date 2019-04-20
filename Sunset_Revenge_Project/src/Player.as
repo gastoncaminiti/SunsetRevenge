@@ -3,6 +3,8 @@ package
 	import net.flashpunk.FP;
 	import net.flashpunk.Sfx;
 	import net.flashpunk.Entity;
+	import flash.geom.Rectangle;
+	import net.flashpunk.utils.Draw;
 	
 	public class Player extends People
 	{
@@ -188,7 +190,6 @@ package
 			}
 			
 		}
-		
 	}
 
 }
