@@ -58,7 +58,7 @@ package
 			setDirection(false);
 			_shield.collidable = false;
 			setHitbox(34, 136, -56,-28);
-			moveHorizontal("walk",10);
+			moveHorizontal("walk",600);
 		}
 		
 		public function walkRight():void{
@@ -66,7 +66,7 @@ package
 			setDirection(true);
 			_shield.collidable = false;
 			setHitbox(34, 136, -56,-28);
-			moveHorizontal("walk",10);
+			moveHorizontal("walk",600);
 		}
  
 		public function shoot():void{
@@ -100,7 +100,7 @@ package
 		public function jump():void {
 			if(getJump()){
 				playAnimation("jump");
-				y -= 180;
+				y -= 8000 * FP.elapsed;
 				setJump(false);
 			}
 			
@@ -150,7 +150,7 @@ package
 			if (p) {
 				setGravity(false);
 				setJump(true);
-				y = p.y - 140;
+				//y = p.y - 140;
 			}
 			else 
 				setGravity(true);
@@ -175,7 +175,7 @@ package
 			isFloor();
 			
 			if (getGravity() && !isAnimation("special_atack")) {
-				y += 5;
+				y += 500 *FP.elapsed;
 				playAnimation("jump");
 			}
 			

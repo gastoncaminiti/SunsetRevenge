@@ -92,7 +92,7 @@ package
 		
 		public function moveHorizontal(name:String,n:Number = 5):void{
 			_peopleAnim.play(name);
-			x+= _peopleToLeft ? n : -n ;
+			x+= _peopleToLeft ? n * FP.elapsed : -n * FP.elapsed;
 		}
 	}
 

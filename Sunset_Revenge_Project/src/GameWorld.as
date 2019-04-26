@@ -61,7 +61,7 @@ package
 			
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(100, 380);
+			this.player = new Player(100, 280);
 			this.enem = new Enemy(400, 180,220,300);
 			this.enem2 = new Enemy(640, 180, 220, 300, 1);
 			
@@ -97,7 +97,6 @@ package
 			if (player.isReset)
 				FP.world = new GameWorld();
 			*/
-				
 			if (!enem.canShoot() && enem.endAnimation() && !enem.isDead())
 				this.enem.stand();
 			if (!enem2.canShoot() && enem2.endAnimation()&& !enem2.isDead())
@@ -196,12 +195,8 @@ package
 			}
 			
 			_infotext.text = "Score:"+ Datamanager.getScore();
-			
-			FP.camera.setTo(player.x < 90 ? 0: player.x - 100, player.y < 800 ? 0 : 800);
-			//FP.camera.y = player.y;
-			// Prevent the camera from going past the map.
-			//FP.camera.x = FP.clamp(FP.camera.x, 0, 3300- FP.screen.width);
-			
+			Cameramanager.setCameraConfig(player.x, player.y, 300,600);
+			Cameramanager.followCamera();
 			super.update();
 			this.removeAll();
 			this.add(background);
