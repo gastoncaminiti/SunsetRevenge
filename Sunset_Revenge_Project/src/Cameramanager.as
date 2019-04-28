@@ -24,18 +24,31 @@ package
 					FP.camera.x -= _speed * FP.elapsed;
 			}else if((FP.camera.x + FP.width) - (_followx + 170) < _offset){
 				if (FP.camera.x + FP.width < 6600)
-						FP.camera.x += _speed * FP.elapsed
+						FP.camera.x += _speed * FP.elapsed;
 			}
 			
 			if (_followy - FP.camera.y < _offset) {
-				if (FP.camera.y > 0)
-					FP.camera.y -= _speed
+				/*
+				if (FP.camera.y > 0) {
+					FP.camera.y += _speed * FP.elapsed;
+				}
+				*/
 			}else if((FP.camera.y + FP.height) - (_followy + 170) < _offset){
-				if (FP.camera.y + FP.height < 1200)
-						FP.camera.y += _speed * FP.elapsed
+				if (FP.camera.y + FP.height < 1200) {
+					FP.camera.y += _speed * FP.elapsed;
+				}
 			}
 			
-			
+		}
+		
+		public static function getCameraX():Number 
+		{
+			return FP.camera.x;
+		}
+		
+		public static function getCameraY():Number 
+		{
+			return FP.camera.y;
 		}
 	}
 

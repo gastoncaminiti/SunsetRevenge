@@ -18,7 +18,7 @@ package
 		private var _clockfire:Number;
 		private var _specialreq:Number;
 		private var _blockcount:Number;
-		
+	
 		public function Player(px:Number = 0, py:Number = 0) 
 		{
 			super(px, py, PLAYER_ANIM, 170, 170, "Player");
@@ -66,7 +66,7 @@ package
 			setDirection(true);
 			_shield.collidable = false;
 			setHitbox(34, 136, -56,-28);
-			moveHorizontal("walk",600);
+			moveHorizontal("walk",400);
 		}
  
 		public function shoot():void{
@@ -88,7 +88,6 @@ package
 				_shield.setHitbox(20, 100, -120, -24);
 			else
 				_shield.setHitbox(20, 100, -20, -24);
-			
 			playAnimation("block");
 		}
 		
@@ -100,12 +99,12 @@ package
 		public function jump():void {
 			if(getJump()){
 				playAnimation("jump");
-				y -= 8000 * FP.elapsed;
+				y -= 400;
 				setJump(false);
 			}
 			
 		}
-
+		
 		public function atack():void {
 			_shield.collidable = true;
 			if(getFlip())
@@ -150,7 +149,6 @@ package
 			if (p) {
 				setGravity(false);
 				setJump(true);
-				//y = p.y - 140;
 			}
 			else 
 				setGravity(true);
@@ -175,7 +173,7 @@ package
 			isFloor();
 			
 			if (getGravity() && !isAnimation("special_atack")) {
-				y += 500 *FP.elapsed;
+				y += 10;
 				playAnimation("jump");
 			}
 			

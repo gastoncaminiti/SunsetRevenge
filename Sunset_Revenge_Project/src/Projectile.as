@@ -64,9 +64,9 @@ package
 				y += Math.sin(Math.atan2(_targety, _targetx)) * 300 * FP.elapsed;
 			}else {
 				if (_directionL)
-					x -= 250 * FP.elapsed;
+					x -= 500 * FP.elapsed * 1;
 				else
-					x += 250 * FP.elapsed;
+					x += 500 * FP.elapsed * 1;
 			}
 		
 		}

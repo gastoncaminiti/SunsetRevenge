@@ -24,21 +24,20 @@ package
 		protected const MUS_MP3:Class;
 		protected var musfx:Sfx;
 		*/
-		[Embed(source="img/Level1Map.png")]
+		[Embed(source="img/Level1Map.jpg")]
 		protected const BACK_IMG:Class;
 		protected var backImage:Image;
 		protected var background:Entity;
 		protected var player:Player;
-		protected var enem:Enemy;
-		protected var enem2:Enemy;
-	
 		/* CONTENEDORES DE OBJETOS */
 		protected var projectiles:Array;
-		private var _aux_projectile:Projectile;
-		
 		/* CONTENEDORES DE PLATAFORMAS */
 		protected var  platforms:Array;
+		/* CONTENEDORES DE ENEMIGOS */
+		protected var  enemies:Array;
 		
+		private var _aux_projectile:Projectile;
+
 		/* HUB */
 		[Embed(source="font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
 		public static var FONT_TITLE:Class;  
@@ -51,20 +50,14 @@ package
 		public function GameWorld() 
 		{
 			/*
-
 			this.signal = new Signal(700, 250);
-			
 			musfx = new Sfx(MUS_MP3);
 			musfx.play();
 			musfx.loop();
 			*/
-			
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(100, 280);
-			this.enem = new Enemy(400, 180,220,300);
-			this.enem2 = new Enemy(640, 180, 220, 300, 1);
-			
+			this.player = new Player(250, 280);
 			_infotext = new Text(" "+ Datamanager.getScore() , 28, 28, 300,50);
 			_infotext.color = 0x532100;
 			_infotext.font = "West";
@@ -75,18 +68,45 @@ package
 			this.add(background);
 			this.add(player);
 			this.add(_bordertext);
-			this.add(enem);
-			this.add(enem2);
 			this.addGraphic(_infotext);
-			
 			//Test de Agregado de proyectiles.
 			this.projectiles = new Array();
 			this.addList(projectiles);
-			//Test de Agregado de Plataformas.
+			// Definición de Plataformas
 			this.platforms = new Array();
-			this.platforms.push(new Platform(0, 400, 6000, 20));
-			this.platforms.push(new Platform(0, 1180, 6600, 20));
+			this.platforms.push(new Platform(0, 400, 1220, 10));
+			this.platforms.push(new Platform(1387, 490, 50, 10));
+			this.platforms.push(new Platform(1495, 490, 135, 10));
+			this.platforms.push(new Platform(1738, 490, 50, 10));
+			this.platforms.push(new Platform(1895, 490, 195, 10));
+			this.platforms.push(new Platform(2240, 490, 50, 10));
+			this.platforms.push(new Platform(2390, 490, 180, 10));
+			this.platforms.push(new Platform(2860, 380, 520, 10));
+			this.platforms.push(new Platform(3587, 366, 190, 10));
+			this.platforms.push(new Platform(3520, 616, 2570, 10));
+			this.platforms.push(new Platform(4800, 393, 150, 10));
+			this.platforms.push(new Platform(5386, 535, 240, 10));
+			this.platforms.push(new Platform(2825, 1180, 3760, 10));
+			this.platforms.push(new Platform(6010, 1006, 230, 10));
+			this.platforms.push(new Platform(5673, 829, 230, 10));
+			this.platforms.push(new Platform(5258, 1006, 230, 10));
+			this.platforms.push(new Platform(4807, 828, 347, 10));
+			this.platforms.push(new Platform(1148, 1070, 1423, 10));
+			this.platforms.push(new Platform(0, 1093, 1400, 10));
+			// Definición de Enemigos
+			this.enemies = new Array();
+			this.enemies.push(new Enemy(989, 254, 220, 300));
+			this.enemies.push(new Enemy(2420, 350, 220, 300));
+			this.enemies.push(new Enemy(3648, 190, 220, 300));
+			this.enemies.push(new Enemy(4476, 480, 220, 300));
+			this.enemies.push(new Enemy(4844, 220, 220, 300));
+			this.enemies.push(new Enemy(5468, 370, 220, 300));
+			this.enemies.push(new Enemy(5758, 654, 220, 300));
+			this.enemies.push(new Enemy(4931, 654, 220, 300));
+			this.enemies.push(new Enemy(2992, 1025, 220, 300));
+			this.enemies.push(new Enemy(3115, 1025, 220, 300));
 			this.addList(platforms);
+			this.addList(enemies);
 		}
 		
 		override public function update():void
@@ -96,19 +116,6 @@ package
 
 			if (player.isReset)
 				FP.world = new GameWorld();
-			*/
-			if (!enem.canShoot() && enem.endAnimation() && !enem.isDead())
-				this.enem.stand();
-			if (!enem2.canShoot() && enem2.endAnimation()&& !enem2.isDead())
-				this.enem2.stand();
-			
-			if (enem.isTouchAura() && enem.canShoot()){
-				this.enem.shoot();
-				_aux_projectile = new Projectile(this.enem.x, this.enem.y + 50);
-				_aux_projectile.setDirection(true);
-				this.projectiles.push(_aux_projectile);
-			}
-			
 			if (enem2.isTouchAura() && enem2.canShoot()){
 				this.enem2.shootDown();
 				_aux_projectile = new Projectile(this.enem2.x + 15, this.enem2.y + 100);
@@ -126,6 +133,18 @@ package
 			if (Input.check(Key.J)){
 				this.enem.shootDown();
 				this.enem2.shootDown();
+			}
+			*/		
+			for (var k:String in enemies){
+				if (!enemies[k].canShoot() && enemies[k].endAnimation() && !enemies[k].isDead())
+					this.enemies[k].stand();
+				
+				if (enemies[k].isTouchAura() && enemies[k].canShoot()){
+					this.enemies[k].shoot();
+					_aux_projectile = new Projectile(this.enemies[k].x, this.enemies[k].y + 50);
+					_aux_projectile.setDirection(true);
+					this.projectiles.push(_aux_projectile);
+				}	
 			}
 			
 			if(!player.isDead()){
@@ -194,19 +213,27 @@ package
 				}
 			}
 			
-			_infotext.text = "Score:"+ Datamanager.getScore();
-			Cameramanager.setCameraConfig(player.x, player.y, 300,600);
+			
+			Cameramanager.setCameraConfig(player.x, player.y, 300, 400);
 			Cameramanager.followCamera();
+			
+			_infotext.text = "Score:" + Datamanager.getScore();
+			_bordertext.x = Cameramanager.getCameraX();
+			_bordertext.y =  Cameramanager.getCameraY();
+			_infotext.x = _bordertext.x + 20;
+			_infotext.y = _bordertext.y + 25;
+			
+			trace(FP.elapsed);
+			
 			super.update();
 			this.removeAll();
 			this.add(background);
 			this.add(_bordertext);
 			this.addList(projectiles);
 			this.addList(platforms);
-			this.add(enem);
-			this.add(enem2);
-			this.add(enem._aura);
-			this.add(enem2._aura);
+			this.addList(enemies);
+			for (var j:String in enemies) 
+				this.add(enemies[j]._aura);
 			this.add(player);
 			this.add(player._shield);
 			this.addGraphic(_infotext);
