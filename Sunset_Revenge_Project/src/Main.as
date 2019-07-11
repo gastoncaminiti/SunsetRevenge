@@ -1,5 +1,6 @@
 package
 {
+	import gameworld.Level1;
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
 	import net.flashpunk.World;
@@ -28,15 +29,18 @@ package
 			FP.console.enable(); FP.console.toggleKey = 188; // Con esto habilito la consola. Se activa con la tecla ',' (coma).
 		}
 		
+	
 		override public function init():void
 		{
 			//FP.screen.scale = 2;
 			FP.screen.color = 0x2c4e68;
 			trace("FlashPunk started.");
-			FP.world = new GameWorld();
-			initKongregateAPI();
+			FP.world = new gameworld.Level1();
+			//initKongregateAPI();
 			super.init();
 		}
+		
+		/*
 	
 		private function loadComplete(event:Event):void {
 			// Save Kongregate API reference
@@ -76,7 +80,7 @@ package
 			this.addChild(loader);          
 			//trace("A");
 		}
-		
+		*/
 	}
 	
 }
