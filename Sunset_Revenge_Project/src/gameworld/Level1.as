@@ -55,9 +55,11 @@ package gameworld
 			musfx.play();
 			musfx.loop();
 			*/
+			/* CONFIGURACION DE INFORMACION DEL NIVEL */
+			DataManager.set_stage(1);
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(250, 280);
+			this.player = new Player(300, 280);
 			_infotext = new Text(" "+ gamemanager.DataManager.getScore() , 28, 28, 300,50);
 			_infotext.color = 0x532100;
 			_infotext.font = "West";
@@ -80,9 +82,7 @@ package gameworld
 			this.platforms.push(new Platform(5386, 535, 240, 10));
 			this.platforms.push(new Platform(2825, 1180, 3760, 10));
 			this.platforms.push(new Platform(6010, 1006, 230, 10));
-			this.platforms.push(new Platform(5673, 829, 230, 10));
 			this.platforms.push(new Platform(5258, 1006, 230, 10));
-			this.platforms.push(new Platform(4807, 828, 347, 10));
 			this.platforms.push(new Platform(1148, 1070, 1423, 10));
 			this.platforms.push(new Platform(0, 1093, 1400, 10));
 			/* DEFINICION DE PROYECTILES DEL NIVEL */
@@ -95,10 +95,10 @@ package gameworld
 			this.enemies.push(new Cowboy(4476, 480, 220, 300));
 			this.enemies.push(new Cowboy(4844, 220, 220, 300));
 			this.enemies.push(new Cowboy(5468, 370, 220, 300));
-			this.enemies.push(new Cowboy(5758, 654, 220, 300));
-			this.enemies.push(new Cowboy(4931, 654, 220, 300));
+			this.enemies.push(new Cowboy(6098, 819, 220, 300));
+			this.enemies.push(new Cowboy(5341, 836, 220, 300));
 			this.enemies.push(new Cowboy(2992, 1025, 220, 300));
-			this.enemies.push(new Cowboy(3115, 1025, 220, 300));
+			this.enemies.push(new Cowboy(3738, 1025, 220, 300));
 			this.enemies.push(new Boss(600, 254,400,500,0))
 			/* VINCULANDO ELEMENTOS AL WORLD */
 			this.add(background);
@@ -223,8 +223,7 @@ package gameworld
 			_bordertext.y = CameraManager.getCameraY();
 			_infotext.x = _bordertext.x + 20;
 			_infotext.y = _bordertext.y + 25;
-			
-			trace(FP.elapsed);
+
 			/* VINCULANDO ELEMENTOS AL WORLD */
 			super.update();
 			this.removeAll();
@@ -238,6 +237,16 @@ package gameworld
 			this.add(player);
 			this.add(player._shield);
 			this.addGraphic(_infotext);
+			/* CONDICIONES DE INTERRUPCION DEL NIVEL */
+			if (DataManager.isLevelWin()) {
+				//FP.world = new Level1();
+			}
+			
+			if (player.isDead()) {
+				DataManager.resetScore();
+				FP.world = new Level1();
+			}
+			
 			/*
 			if (player.isWin) this.add(signal);
 			

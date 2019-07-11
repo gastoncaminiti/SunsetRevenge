@@ -8,6 +8,8 @@ package gameclass
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.graphics.Spritemap;
 	
+	import gamemanager.CameraManager;
+	
 	public class Projectile extends Entity
 	{
 		
@@ -67,6 +69,10 @@ package gameclass
 					x -= 500 * FP.elapsed * 1;
 				else
 					x += 500 * FP.elapsed * 1;
+			}
+			
+			if (CameraManager.getLimitX() > x ) {
+				destroy();
 			}
 		
 		}

@@ -1,6 +1,7 @@
 package gameclass 
 {
 	import gameclass.Enemy;
+	import gamemanager.DataManager;
 
 	public class Boss extends Enemy
 	{
@@ -12,7 +13,7 @@ package gameclass
 
 		public function Boss(px:Number = 0, py:Number = 0, ax:Number = 200, ay:Number = 200,  new_type:Number = 0) 
 		{
-			super(px, py, BOSS_ANIM, ax, ay, 10, 200, 400);
+			super(px, py, BOSS_ANIM, ax, ay, 2, 200, 400);
 			switch(new_type) {
 				case 0:
 					addAnimation("stand", [2], 10, false);
@@ -22,6 +23,7 @@ package gameclass
 					addAnimation("dead", [8,9,10], 5, false);
 				break;
 			}
+			DataManager.setLevelWin(false);
   		}
 		
 		override public function update():void
@@ -44,12 +46,8 @@ package gameclass
 			
 			if (isDead()){
 				playAnimation("dead");
-				if (collidable) {
-					x -= 20;
-					y -= 5;
-					collidable = false;
-					_aura.collidable = false;
-				}
+				DataManager.setLevelWin(true);
+				not_collidable();
 			}	
 		}
 

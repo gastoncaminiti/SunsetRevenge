@@ -107,5 +107,10 @@ package gameclass
 		public function reset_shoot():void {
 			_shoot = false;
 		}
+		
+		public function not_collidable():void {
+			collidable = false;
+			_aura.collidable = false;
+		}
 	}
 }

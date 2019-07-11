@@ -101,7 +101,7 @@ package gameclass
 		public function jump():void {
 			if(getJump()){
 				playAnimation("jump");
-				y -= 400;
+				y -= 200;
 				setJump(false);
 			}
 			
@@ -175,7 +175,7 @@ package gameclass
 			isFloor();
 			
 			if (getGravity() && !isAnimation("special_atack")) {
-				y += 10;
+				y += 7;
 				playAnimation("jump");
 			}
 			
