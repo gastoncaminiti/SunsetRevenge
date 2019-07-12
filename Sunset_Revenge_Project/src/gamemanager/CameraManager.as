@@ -35,8 +35,6 @@ package gamemanager
 				FP.camera.y = MAP_LIMIT_Y_MIN 
 			else
 				FP.camera.y = MAP_LIMIT_Y_MAX/2
-				
-			trace(FP.camera.y)
 		}
 		
 

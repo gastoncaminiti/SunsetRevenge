@@ -26,7 +26,7 @@ package
 		public function Main():void
 		{
 			super(800, 600, 60);
-			//FP.console.enable(); FP.console.toggleKey = 188; // Con esto habilito la consola. Se activa con la tecla ',' (coma).
+			FP.console.enable(); FP.console.toggleKey = 188; // Con esto habilito la consola. Se activa con la tecla ',' (coma).
 		}
 		
 	

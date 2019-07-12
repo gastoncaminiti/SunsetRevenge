@@ -99,7 +99,7 @@ package gameworld
 			this.enemies.push(new Cowboy(5341, 836, 220, 300));
 			this.enemies.push(new Cowboy(2992, 1025, 220, 300));
 			this.enemies.push(new Cowboy(3738, 1025, 220, 300));
-			this.enemies.push(new Boss(600, 254,400,500,0))
+			this.enemies.push(new Boss(600, 254,400,500,10,"Bob"))
 			/* VINCULANDO ELEMENTOS AL WORLD */
 			this.add(background);
 			this.add(player);
