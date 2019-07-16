@@ -1,8 +1,10 @@
 package
 {
+	import gameworld.Credit;
 	import gameworld.Landing;
 	import gameworld.Level1;
 	import gameworld.Opening;
+	import gameworld.Preview;
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
 	import net.flashpunk.World;
@@ -36,7 +38,6 @@ package
 		{
 			//FP.screen.scale = 2;
 			FP.screen.color = 0x2c4e68;
-			trace("FlashPunk started.");
 			//FP.world = new gameworld.Level1();
 			FP.world = new Opening();
 			//initKongregateAPI();

@@ -17,8 +17,7 @@ package gameworld
 	{
 		[Embed(source = "../asset/img/Intro.png")]
 		private const INTRO_IMG:Class;
-		[Embed(source="../asset/font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
-		public static var FONT_TITLE:Class;  
+ 
 		[Embed(source = "../asset/sound/intro.mp3")]	
 		protected const MUS_MP3:Class;
 		
@@ -63,7 +62,7 @@ package gameworld
 			
 			if (Input.pressed(Key.ENTER)) {
 				_musfx.stop();
-				FP.world = new Level1();
+				FP.world = new Preview();
 			}
 			super.update();
 		}
