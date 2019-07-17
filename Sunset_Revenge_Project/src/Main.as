@@ -39,7 +39,7 @@ package
 			//FP.screen.scale = 2;
 			FP.screen.color = 0x2c4e68;
 			//FP.world = new gameworld.Level1();
-			FP.world = new Opening();
+			FP.world = new Level1();
 			//initKongregateAPI();
 			super.init();
 		}

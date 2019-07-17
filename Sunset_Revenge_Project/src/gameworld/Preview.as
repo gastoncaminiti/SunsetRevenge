@@ -124,7 +124,7 @@ package gameworld
 			
 			if (Input.pressed(Key.ENTER)) {
 				_musfx.stop();
-				FP.world = new Credit();
+				FP.world = new Level1();
 			}
 			super.update();
 		}

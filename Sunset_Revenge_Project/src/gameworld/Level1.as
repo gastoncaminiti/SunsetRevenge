@@ -32,6 +32,8 @@ package gameworld
 		protected var player:Player;
 		/* CONTENEDORES DE OBJETOS */
 		protected var projectiles:Array;
+		protected var life_gui:Array;
+		protected var special_gui:Array;
 		/* CONTENEDORES DE PLATAFORMAS */
 		protected var  platforms:Array;
 		/* CONTENEDORES DE ENEMIGOS */
@@ -99,7 +101,14 @@ package gameworld
 			this.enemies.push(new Cowboy(5341, 836, 220, 300));
 			this.enemies.push(new Cowboy(2992, 1025, 220, 300));
 			this.enemies.push(new Cowboy(3738, 1025, 220, 300));
-			this.enemies.push(new Boss(600, 254,400,500,10,"Bob"))
+			this.enemies.push(new Boss(600, 254, 400, 500, 10, "Bob"))
+			/* DEFINICION DE INTERFAZ DE VIDA */
+			this.life_gui = new Array();
+			for (var i:int = 0; i < player.getLife(); i++) 
+			{
+				this.life_gui.push(new Feather(200+ (Feather.get_size() * i),200))
+			}
+			this.special_gui = new Array();
 			/* VINCULANDO ELEMENTOS AL WORLD */
 			this.add(background);
 			this.add(player);
@@ -155,9 +164,9 @@ package gameworld
 				if (!Input.check(Key.ANY) && player.endAnimation())
 					player.stand();
 				else {
-					if (Input.check(Key.LEFT))
+					if (Input.check(Key.LEFT)  && player.can_walk() && player.untouch_limit_left() && !Input.check(Key.RIGHT))
 						player.walkLeft();
-					if (Input.check(Key.RIGHT))
+					if (Input.check(Key.RIGHT) && player.can_walk() && player.untouch_limit_right() && !Input.check(Key.LEFT))
 						player.walkRight();
 					if (Input.check(Key.DOWN))
 						player.crouch();	
@@ -223,7 +232,28 @@ package gameworld
 			_bordertext.y = CameraManager.getCameraY();
 			_infotext.x = _bordertext.x + 20;
 			_infotext.y = _bordertext.y + 25;
-
+			
+			if (this.life_gui.length > player.getLife())
+				this.life_gui.pop();
+				
+			if (this.special_gui.length > player.get_blocks())
+				this.special_gui.pop();
+			
+			if (this.special_gui.length < player.get_blocks())
+				this.special_gui.push(new Feather(200,200,0));
+				
+			for (var h:int = 0; h < this.life_gui.length ; h++) 
+			{
+				this.life_gui[h].x = _bordertext.x + 280 + (Feather.get_size() * h)
+				this.life_gui[h].y = _bordertext.y ;
+			}
+			
+			for (var g:int = 0; g < this.special_gui.length ; g++) 
+			{
+				this.special_gui[g].x = _bordertext.x + 280 + (Feather.get_size() * g)
+				this.special_gui[g].y = _bordertext.y + Feather.get_size();
+			}
+			
 			/* VINCULANDO ELEMENTOS AL WORLD */
 			super.update();
 			this.removeAll();
@@ -237,6 +267,8 @@ package gameworld
 			this.add(player);
 			this.add(player._shield);
 			this.addGraphic(_infotext);
+			this.addList(life_gui);
+			this.addList(special_gui);
 			/* CONDICIONES DE INTERRUPCION DEL NIVEL */
 			if (DataManager.isLevelWin()) {
 				//FP.world = new Level1();
