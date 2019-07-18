@@ -30,7 +30,7 @@ package gameworld
 		[Embed(source="../asset/font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
 		private const FONT_TITLE:Class;  
 		[Embed(source = "../asset/sound/preview.mp3")]	
-		
+	
 		private const MUS_MP3:Class;
 		private var _introImage:Image;
 		private var _introEntity:Entity;

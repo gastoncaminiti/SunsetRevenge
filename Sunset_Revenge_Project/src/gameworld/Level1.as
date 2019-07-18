@@ -25,6 +25,7 @@ package gameworld
 		protected const MUS_MP3:Class;
 		protected var musfx:Sfx;
 		*/
+		
 		[Embed(source="../asset/img/Level1Map.jpg")]
 		protected const BACK_IMG:Class;
 		protected var backImage:Image;
@@ -44,6 +45,7 @@ package gameworld
 		[Embed(source="../asset/font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
 		public static var FONT_TITLE:Class;  
 		protected var _infotext:Text;
+		protected var _usertext:Text;
 		[Embed(source="../asset/img/HUBborder.png")]
 		protected const BORDER_IMG:Class;
 		protected var _bordertext:Entity;
@@ -57,6 +59,7 @@ package gameworld
 			musfx.play();
 			musfx.loop();
 			*/
+			//Main._loader.contentLoaderInfo.addEventListener(Event.COMPLETE, KongregateManager.set_user_score);
 			/* CONFIGURACION DE INFORMACION DEL NIVEL */
 			DataManager.set_stage(1);
 			backImage = new Image(BACK_IMG);
@@ -66,6 +69,10 @@ package gameworld
 			_infotext.color = 0x532100;
 			_infotext.font = "West";
 			_infotext.size = 26;
+			_usertext = new Text(DataManager.get_username() , 28, 28, 300,50);
+			_usertext.color = 0xffffff;
+			_usertext.font = "West";
+			_usertext.size = 20;
 			_borderImage = new Image(BORDER_IMG);
 			_bordertext = new Entity(5, 5, _borderImage);
 			/* DEFINICION DE PLATAFORMAS DEL NIVEL */
@@ -228,10 +235,13 @@ package gameworld
 			CameraManager.followCamera();
 			
 			_infotext.text = "Score:" + DataManager.getScore();
+			_usertext.text = DataManager.get_username();
 			_bordertext.x = CameraManager.getCameraX();
 			_bordertext.y = CameraManager.getCameraY();
 			_infotext.x = _bordertext.x + 20;
-			_infotext.y = _bordertext.y + 25;
+			_infotext.y = _bordertext.y + 22;
+			_usertext.x = _bordertext.x + 20;
+			_usertext.y = _bordertext.y + 5;
 			
 			if (this.life_gui.length > player.getLife())
 				this.life_gui.pop();
@@ -267,11 +277,12 @@ package gameworld
 			this.add(player);
 			this.add(player._shield);
 			this.addGraphic(_infotext);
+			this.addGraphic(_usertext);
 			this.addList(life_gui);
 			this.addList(special_gui);
 			/* CONDICIONES DE INTERRUPCION DEL NIVEL */
 			if (DataManager.isLevelWin()) {
-				//FP.world = new Level1();
+				FP.world = new Credit();
 			}
 			
 			if (player.isDead()) {

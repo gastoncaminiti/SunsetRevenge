@@ -5,6 +5,9 @@ package gamemanager
 		private static var _highScore:int = 10;
 		private static var _levelwin:Boolean = false;
 		private static var _indexstage:Number = 1;
+		
+		private static var _iduser:Number;
+		private static var _username:String = "Guest";
 	
 		public static function getScore():int {
 			return _highScore;
@@ -32,6 +35,22 @@ package gamemanager
 		
 		public static function get_stage():Number {
 			return _indexstage;
+		}
+		
+		public static function set_username(new_username:String):void {
+			_username = new_username;
+		}
+		
+		public static function get_username():String {
+			return _username;
+		}
+		
+		public static function set_iduser(new_iduser:Number):void {
+			_iduser = new_iduser;
+		}
+		
+		public static function get_iduser():Number {
+			return _iduser;
 		}
 	}
 }

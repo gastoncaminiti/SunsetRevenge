@@ -32,6 +32,7 @@ package gameworld
 		
 		public function Credit() 
 		{
+				Main.SaveScore();
 				_introImage = new Image(INTRO_IMG);
 				_introEntity = new Entity(0, 0, _introImage);
 				

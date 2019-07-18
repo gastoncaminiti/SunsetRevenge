@@ -1,5 +1,6 @@
 package
 {
+	import gamemanager.KongregateManager;
 	import gameworld.Credit;
 	import gameworld.Landing;
 	import gameworld.Level1;
@@ -26,6 +27,7 @@ package
 	public class Main extends Engine 
 	{
 		private var kongregate:*;
+		public static var _loader:Loader;
 		
 		public function Main():void
 		{
@@ -33,58 +35,18 @@ package
 			FP.console.enable(); FP.console.toggleKey = 188; // Con esto habilito la consola. Se activa con la tecla ',' (coma).
 		}
 		
-	
 		override public function init():void
 		{
-			//FP.screen.scale = 2;
 			FP.screen.color = 0x2c4e68;
-			//FP.world = new gameworld.Level1();
+			_loader = KongregateManager.GetLoaderUser(root.loaderInfo);
+			this.addChild(_loader);
 			FP.world = new Level1();
-			//initKongregateAPI();
 			super.init();
 		}
 		
-		/*
-	
-		private function loadComplete(event:Event):void {
-			// Save Kongregate API reference
-			kongregate = event.target.content;
-				 
-			// Connect to the back-end
-			kongregate.services.connect();
-			trace(kongregate.loaderInfo.url);
-			kongregate.stats.submit("Total Clicks", 1);
-			kongregate.stats.submit("Max Clicks", 5);
-			kongregate.stats.submit("Last X", 6);
-					 
-			// You can now access the API via:
-			// kongregate.services
-			// kongregate.user
-			// kongregate.scores
-			// kongregate.stats
-			// etc...
+		public static function SaveScore():void {
+			KongregateManager.SetLoaderScore(_loader);
 		}
-		
-		private function initKongregateAPI():void {
-			// Pull the API path from the FlashVars
-			var paramObj:Object = LoaderInfo(root.loaderInfo).parameters;
-					 
-			// The API path. The "shadow" API will load if testing locally. 
-			var apiPath:String = paramObj.kongregate_api_path || 
-			"http://www.kongregate.com/flash/API_AS3_Local.swf";
-					 
-			// Allow the API access to this SWF
-			Security.allowDomain(apiPath);
-					 
-			// Load the API
-			var request:URLRequest = new URLRequest(apiPath);
-			var loader:Loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, loadComplete);
-			loader.load(request);
-			this.addChild(loader);          
-			//trace("A");
-		}
-		*/
 	}
 	
 }

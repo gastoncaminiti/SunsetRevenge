@@ -12,7 +12,7 @@ package gameclass
 	
 	public class Player extends gameclass.People
 	{
-		
+				
 		[Embed(source = "../asset/img/Player.png")]
 		private const PLAYER_ANIM:Class;
 		
