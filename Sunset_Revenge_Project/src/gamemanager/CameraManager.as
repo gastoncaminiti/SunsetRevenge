@@ -8,8 +8,6 @@ package gamemanager
 		private static var _speed:int = 2;
 		private static var _followx:int = 0;
 		private static var _followy:int = 0;
-		private static var _limitstagex:int;
-		private static var _limitstagey:int;
 		
 		/*DEFINICION DE CONSTANTES DE DIMENSION DEL MAPA */
 		public static var MAP_LIMIT_X_MIN:int = 0;
@@ -32,7 +30,10 @@ package gamemanager
 				FP.camera.x = _followx - _offset;
 			/* SEGUIMIENTO DE CAMARA VERTICAL */
 			if (_followy < FP.height)
-				FP.camera.y = MAP_LIMIT_Y_MIN 
+				if (FP.camera.x < 3000)
+					FP.camera.y = MAP_LIMIT_Y_MIN;
+				else
+					FP.camera.y = MAP_LIMIT_Y_MIN + 100;
 			else
 				FP.camera.y = MAP_LIMIT_Y_MAX/2
 		}
@@ -40,13 +41,13 @@ package gamemanager
 
 		public static function getLimitX():int
 		{
-			return _limitstagex;
+			return FP.camera.x + FP.width;
 		}
 		
 		
 		public static function getLimitY():int
 		{
-			return _limitstagey;
+			return FP.camera.y + FP.height;
 		}
 		
 		public static function getCameraX():Number 

@@ -31,8 +31,8 @@ package
 		
 		public function Main():void
 		{
-			super(800, 600, 60);
-			FP.console.enable(); FP.console.toggleKey = 188; // Con esto habilito la consola. Se activa con la tecla ',' (coma).
+			super(800, 600, 30);
+			//FP.console.enable(); FP.console.toggleKey = 188;
 		}
 		
 		override public function init():void
@@ -40,7 +40,7 @@ package
 			FP.screen.color = 0x2c4e68;
 			_loader = KongregateManager.GetLoaderUser(root.loaderInfo);
 			this.addChild(_loader);
-			FP.world = new Level1();
+			FP.world = new Opening();
 			super.init();
 		}
 		

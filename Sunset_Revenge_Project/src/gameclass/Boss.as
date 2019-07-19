@@ -43,6 +43,9 @@ package gameclass
 					can_jumpshoot = false;
 					can_rider = false;
 					index_phase = 1;
+					setFlip(true);
+					flip_aura();
+					set_firerate(25);
 				break;
 				case "Bob":
 					addAnimation("stand", [19], 10, false);
@@ -102,69 +105,61 @@ package gameclass
   		}
 		
 		override public function update():void
-		{		
-			/* ACTUALIZAR LA POSICION DEL AURA DEL ENEMIGO */
-			update_aura();
-			/* ACTUALIZAR ESTADO DEL JEFE EN FUNCION DEL DAÑO RECIBIDO*/
-			if (getLife() < life_status_index[actual_phase]) {
-				if (actual_phase < index_phase){
-					actual_phase++;
-					in_action = true;
-					trace("---------------------");
-					trace("FASE " + actual_phase);
-				}
-			}
-			
-			
-			/* ----------------------- ACTUALIZAR ACCIONES DEL JEFE -----------------------*/
-			
-			/* ACCION DE CAMINAR Y DISPARAR (STEVE) */
-			if (can_walk && in_action && actual_phase == 1) {
-				if (getFlip()) {
-					if(x < _originx + UNIT_MOVE_X){
-						setDirection(true);
-						moveHorizontal("walk", UNIT_MOVE_X)
-					}else {
-						setFlip(false);
+		{	
+			if (!isDead()){
+				/* ACTUALIZAR LA POSICION DEL AURA DEL ENEMIGO */
+				update_aura();
+				/* ACTUALIZAR ESTADO DEL JEFE EN FUNCION DEL DAÑO RECIBIDO*/
+				if (getLife() < life_status_index[actual_phase]){
+					if (actual_phase < index_phase){
+						actual_phase++;
+						in_action = true;
 					}
-				}else {
-					if(x > _originx - UNIT_MOVE_X){
-						setDirection(false);
-						moveHorizontal("walk", UNIT_MOVE_X)
-					}else {
-						setFlip(true);
-					}
-					
 				}
-			}
-			
+				/* ----------------------- ACTUALIZAR ACCIONES DEL JEFE -----------------------*/
+				/* ACCION DE CAMINAR Y DISPARAR (STEVE) */
+				if (can_walk && in_action && actual_phase == 1) {
+					set_firerate(20);
+					if (getFlip()) {
+						if(x < _originx + UNIT_MOVE_X){
+							setDirection(true);
+							moveHorizontal("walk", UNIT_MOVE_X)
+						}else {
+							setFlip(false);
+							flip_aura();
+						}
+					}else {
+						if(x > _originx - UNIT_MOVE_X){
+							setDirection(false);
+							moveHorizontal("walk", UNIT_MOVE_X)
+						}else {
+							setFlip(true);
+							flip_aura();
+						}
 						
-			
-			/* ACTUALIZAR TEMPORIZADOR DEL JEFE */
-			
-			if (repeat_action) 
-				_clockreaction++;
-				
-			if (_clockreaction == COOLDOWN) {
-				_clockreaction = 0;
-				repeat_action = false;
-			}
-			
-				
-			if (!isTouchAura() && !isDead() && !in_action)
-				playAnimation("stand");
+					}
+				}
+				/* ACTUALIZAR TEMPORIZADOR DEL JEFE */
+				if (repeat_action) 
+					_clockreaction++;
+					
+				if (_clockreaction == COOLDOWN) {
+					_clockreaction = 0;
+					repeat_action = false;
+				}
+					
+				if (!isTouchAura() && !isDead() && !in_action)
+					playAnimation("stand");
 
-			if (!canShoot()) 
-				step_clock();
-				
-			if (get_clock() == get_firerate()){
-				reset_shoot();
-				reset_clock();
-			}
-			
-			isHurt();
-			
-			if (isDead()){
+				if (!canShoot()) 
+					step_clock();
+					
+				if (get_clock() == get_firerate()){
+					reset_shoot();
+					reset_clock();
+				}
+				isHurt();
+			}else{
 				playAnimation("dead");
 				DataManager.setLevelWin(true);
 				not_collidable();

@@ -17,31 +17,35 @@ package gameworld
 	public class Level1 extends World
 	{
 	
-		/*
-		protected var textTime:String;
-		protected var day:Number;
-		protected var signal:Signal;
-		[Embed(source = "sound/fondo.mp3")]	
+		/* VARIABLES DE SONIDOS DEL NIVEL */
+		[Embed(source = "../asset/sound/stage1.mp3")]	
 		protected const MUS_MP3:Class;
+		[Embed(source = "../asset/sound/shoot.mp3")]	
+		protected const SHOOT_MP3:Class;
+		[Embed(source = "../asset/sound/knife.mp3")]	
+		protected const KNIFE_MP3:Class;
+		[Embed(source = "../asset/sound/win.mp3")]	
+		protected const WIN_MP3:Class;
 		protected var musfx:Sfx;
-		*/
-		
+		protected var shootfx:Sfx;
+		protected var knifefx:Sfx;
+		protected var winfx:Sfx;
+		/* VARIABLES DE ENTIDADES BASICAS */
 		[Embed(source="../asset/img/Level1Map.jpg")]
 		protected const BACK_IMG:Class;
 		protected var backImage:Image;
 		protected var background:Entity;
 		protected var player:Player;
-		/* CONTENEDORES DE OBJETOS */
+		/*VARIABLE CONTENEDORES DE OBJETOS */
 		protected var projectiles:Array;
 		protected var life_gui:Array;
 		protected var special_gui:Array;
-		/* CONTENEDORES DE PLATAFORMAS */
+		/*VARIABLE CONTENEDORES DE PLATAFORMAS */
 		protected var  platforms:Array;
-		/* CONTENEDORES DE ENEMIGOS */
+		/*VARIABLE CONTENEDORES DE ENEMIGOS */
 		protected var  enemies:Array;
 		private var _aux_projectile:Projectile;
-
-		/* HUB */
+		/* VARIABLES DEL HUB */
 		[Embed(source="../asset/font/westtest.ttf", fontFamily="West",embedAsCFF="false")]  
 		public static var FONT_TITLE:Class;  
 		protected var _infotext:Text;
@@ -53,19 +57,19 @@ package gameworld
 		
 		public function Level1() 
 		{
-			/*
-			this.signal = new Signal(700, 250);
-			musfx = new Sfx(MUS_MP3);
+			/* CONFIGURACION DE SONIDO DEL NIVEL */
+			musfx 	= new Sfx(MUS_MP3);
+			shootfx = new Sfx(SHOOT_MP3);
+			knifefx = new Sfx(KNIFE_MP3);
+			winfx 	= new Sfx(WIN_MP3);
 			musfx.play();
 			musfx.loop();
-			*/
-			//Main._loader.contentLoaderInfo.addEventListener(Event.COMPLETE, KongregateManager.set_user_score);
 			/* CONFIGURACION DE INFORMACION DEL NIVEL */
 			DataManager.set_stage(1);
 			backImage = new Image(BACK_IMG);
 			background = new Entity(0, 0, backImage);
-			this.player = new Player(300, 280);
-			_infotext = new Text(" "+ gamemanager.DataManager.getScore() , 28, 28, 300,50);
+			this.player = new Player(300, 300);
+			_infotext = new Text(" "+ gamemanager.DataManager.getScore() , 28, 28, 500,50);
 			_infotext.color = 0x532100;
 			_infotext.font = "West";
 			_infotext.size = 26;
@@ -77,44 +81,46 @@ package gameworld
 			_bordertext = new Entity(5, 5, _borderImage);
 			/* DEFINICION DE PLATAFORMAS DEL NIVEL */
 			this.platforms = new Array();
-			this.platforms.push(new Platform(0, 400, 1220, 10));
-			this.platforms.push(new Platform(1387, 490, 50, 10));
-			this.platforms.push(new Platform(1495, 490, 135, 10));
-			this.platforms.push(new Platform(1738, 490, 50, 10));
-			this.platforms.push(new Platform(1895, 490, 195, 10));
-			this.platforms.push(new Platform(2240, 490, 50, 10));
-			this.platforms.push(new Platform(2390, 490, 180, 10));
-			this.platforms.push(new Platform(2860, 380, 520, 10));
+			this.platforms.push(new Platform(0, 455, 1220, 90)); 
+			this.platforms.push(new Platform(1200, 590, 1680, 10,0)); 	// Reset Area I
+			this.platforms.push(new Platform(1383, 500, 60, 20));
+			this.platforms.push(new Platform(1495, 500, 120, 20));
+			this.platforms.push(new Platform(1733, 500, 60, 20));
+			this.platforms.push(new Platform(1902, 500, 190, 20));
+			this.platforms.push(new Platform(2230, 500, 60, 20));
+			this.platforms.push(new Platform(2390, 500, 170, 20)); 		// End Risk Platform
+			this.platforms.push(new Platform(2850, 400, 530, 20));
+			this.platforms.push(new Platform(3320, 430, 190, 190));
 			this.platforms.push(new Platform(3587, 366, 190, 10));
-			this.platforms.push(new Platform(3520, 616, 2570, 10));
+			this.platforms.push(new Platform(3525, 605, 2570, 20));
 			this.platforms.push(new Platform(4800, 393, 150, 10));
-			this.platforms.push(new Platform(5386, 535, 240, 10));
-			this.platforms.push(new Platform(2825, 1180, 3760, 10));
+			this.platforms.push(new Platform(5386, 535, 240, 10));		// End First Level
+			this.platforms.push(new Platform(2825, 1170, 3777, 20));
 			this.platforms.push(new Platform(6010, 1006, 230, 10));
 			this.platforms.push(new Platform(5258, 1006, 230, 10));
-			this.platforms.push(new Platform(1148, 1070, 1423, 10));
-			this.platforms.push(new Platform(0, 1093, 1400, 10));
+			this.platforms.push(new Platform(2524, 1200, 300, 10,0)); 	// Reset Area II
+			this.platforms.push(new Platform(1180, 1060, 1365, 20));
+			this.platforms.push(new Platform(0, 1070, 1200, 20));
 			/* DEFINICION DE PROYECTILES DEL NIVEL */
 			this.projectiles = new Array();
 			/* DEFINICION DE ENEMIGOS DEL NIVEL */
 			this.enemies = new Array();
-			this.enemies.push(new Cowboy(989, 254, 220, 300,1));
-			this.enemies.push(new Cowboy(2420, 350, 220, 300));
-			this.enemies.push(new Cowboy(3648, 190, 220, 300));
-			this.enemies.push(new Cowboy(4476, 480, 220, 300));
-			this.enemies.push(new Cowboy(4844, 220, 220, 300));
-			this.enemies.push(new Cowboy(5468, 370, 220, 300));
-			this.enemies.push(new Cowboy(6098, 819, 220, 300));
-			this.enemies.push(new Cowboy(5341, 836, 220, 300));
-			this.enemies.push(new Cowboy(2992, 1025, 220, 300));
-			this.enemies.push(new Cowboy(3738, 1025, 220, 300));
-			this.enemies.push(new Boss(600, 254, 400, 500, 10, "Bob"))
+			this.enemies.push(new Cowboy(980, 290, 	350, 120,false,40)); 	//E1 (LEVEL DESING REFERENCE).
+			this.enemies.push(new Cowboy(2400, 340, 350, 120, false,35));	//E2
+			this.enemies.push(new Cowboy(3640, 180, 450, 120,false,30));	//E3
+			this.enemies.push(new Cowboy(4400, 450, 420, 120,false,30));	//E4
+			this.enemies.push(new Cowboy(4820, 210, 300, 370,false,30,1));	//E5
+			this.enemies.push(new Cowboy(5456, 360, 420, 120,false,25));	//E6
+			this.enemies.push(new Cowboy(6075, 820, 420, 120,true,25));		//E7	
+			this.enemies.push(new Cowboy(5341, 826, 420, 120,true,25));		//E8
+			this.enemies.push(new Cowboy(3705, 660, 300, 440,true,30,1));	//E9
+			this.enemies.push(new Cowboy(3390, 1010, 420, 120,true,30));	//E10
+			this.enemies.push(new Cowboy(3738, 1010, 420, 120,true,30));	//E11
+			this.enemies.push(new Boss(490, 905, 620, 300, 20, "Steve")) 	//BOSS
 			/* DEFINICION DE INTERFAZ DE VIDA */
 			this.life_gui = new Array();
 			for (var i:int = 0; i < player.getLife(); i++) 
-			{
-				this.life_gui.push(new Feather(200+ (Feather.get_size() * i),200))
-			}
+				this.life_gui.push(new Feather(200 + (Feather.get_size() * i), 200));
 			this.special_gui = new Array();
 			/* VINCULANDO ELEMENTOS AL WORLD */
 			this.add(background);
@@ -128,46 +134,47 @@ package gameworld
 		
 		override public function update():void
 		{
-			/*
-			musfx.volume = 0.2;
-
-			if (player.isReset)
-				FP.world = new GameWorld();
-			if (enem2.isTouchAura() && enem2.canShoot()){
-				this.enem2.shootDown();
-				_aux_projectile = new Projectile(this.enem2.x + 15, this.enem2.y + 100);
-				_aux_projectile.setRemote(true);
-				_aux_projectile.setTarget(player.x + 90,player.y);
-				this.projectiles.push(_aux_projectile);
-			}
-			
-			if (Input.check(Key.K)){
-				this.enem.run();
-				this.enem2.run();
-			}
-			
-			
-			if (Input.check(Key.J)){
-				this.enem.shootDown();
-				this.enem2.shootDown();
-			}
-			*/		
+			/* ACTUALIZACION DE SONIDO*/
+			if (musfx.playing) 	 musfx.volume = 0.4;
+			if (shootfx.playing) shootfx.volume = 0.5;
+			if (knifefx.playing) knifefx.volume = 0.6;
+			/* ACTUALIZACION DE ESTADO DE ENEMIGOS */
 			for (var k:String in enemies){
 				if (!enemies[k].canShoot() && enemies[k].endAnimation() && !enemies[k].isDead())
 					this.enemies[k].stand();
-				
-				if (enemies[k].isTouchAura() && enemies[k].canShoot()){
-					this.enemies[k].shoot();
-					_aux_projectile = new Projectile(this.enemies[k].x, this.enemies[k].y + 50);
-					_aux_projectile.setDirection(true);
-					this.projectiles.push(_aux_projectile);
+				if (enemies[k].isTouchAura() && enemies[k].canShoot()) {
+					if (enemies[k].isShootdownStatus() ) {
+						if (!this.enemies[k].getFlip() && this.enemies[k].x > player.x + 40) {
+							this.enemies[k].shootDown();
+							_aux_projectile = new Projectile(this.enemies[k].x + 10 , this.enemies[k].y + 120);
+							_aux_projectile.setRemote(true);
+							_aux_projectile.setTarget(player.x + player.PLAYER_SIZE/2, player.y);
+							this.projectiles.push(_aux_projectile);
+							shootfx.play();
+						}
+						
+						if (this.enemies[k].getFlip() && this.enemies[k].x < player.x) {
+							this.enemies[k].shootDown();
+							_aux_projectile = new Projectile(this.enemies[k].getFlip() ? this.enemies[k].x + 130 : this.enemies[k].x - 5 , this.enemies[k].y + 40);
+							_aux_projectile.setRemote(true);
+							_aux_projectile.setTarget(player.x + player.PLAYER_SIZE/2, player.y);
+							this.projectiles.push(_aux_projectile);
+							shootfx.play();
+						}
+					}else {
+						this.enemies[k].shoot();
+						_aux_projectile = new Projectile(this.enemies[k].getFlip() ? this.enemies[k].x + 130 : this.enemies[k].x - 5 , this.enemies[k].y + 60);
+						_aux_projectile.setFlip(this.enemies[k].getFlip());
+						_aux_projectile.setDirection(!this.enemies[k].getFlip());
+						this.projectiles.push(_aux_projectile);
+						shootfx.play();
+					}
 				}	
 			}
-			
-			if(!player.isDead()){
+			/* ACTUALIZACION DE ESTADO DEL JUGADOR */
+			if(!player.isDead() && !DataManager.isLevelWin()){
 				if (!Input.check(Key.ANY) && player.isWalk())
 					player.stand();
-
 				if (!Input.check(Key.ANY) && player.endAnimation())
 					player.stand();
 				else {
@@ -181,59 +188,60 @@ package gameworld
 						player.jump();
 					if (Input.check(Key.Q))
 						player.block();
-					if (Input.check(Key.W))
+					if (Input.check(Key.W)){
 						player.atack();
+						knifefx.play();
+					}
 					if (Input.check(Key.E) && player.canShoot()) {
 						player.shoot();
 						_aux_projectile = new Projectile(player.getFlip() ? this.player.x + 130 : this.player.x - 5 , this.player.y + 60, 1);
 						_aux_projectile.setFlip(player.getFlip());
 						_aux_projectile.setDirection(!player.getFlip());
 						this.projectiles.push(_aux_projectile);
+						knifefx.play();
 					}
 					if (Input.check(Key.R) && player.canSpecial()){
 						player.specialatack();	
 						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(player.x + 85, 0);
+						_aux_projectile.setTarget(CameraManager.getCameraX(), CameraManager.getCameraY()); //P1
 						this.projectiles.push(_aux_projectile);
 						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(player.x + 85,600);
+						_aux_projectile.setTarget(CameraManager.getCameraX(),CameraManager.getCameraY() + FP.height/2); //P2
 						this.projectiles.push(_aux_projectile);
 						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(0,player.y + 85);
+						_aux_projectile.setTarget(CameraManager.getCameraX(),CameraManager.getCameraY() + FP.height); //P3
 						this.projectiles.push(_aux_projectile);
 						_aux_projectile = new Projectile(this.player.x + 85 , this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(800,player.y + 85);
+						_aux_projectile.setTarget(CameraManager.getCameraX() + FP.width/2,CameraManager.getCameraY());//P4
 						this.projectiles.push(_aux_projectile);
-						/*----------------*/
 						_aux_projectile = new Projectile(this.player.x + 60, this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(-85, 0);
+						_aux_projectile.setTarget(CameraManager.getCameraX() + FP.width,CameraManager.getCameraY()); //P5
 						this.projectiles.push(_aux_projectile);
 						_aux_projectile = new Projectile(this.player.x + 60 , this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(0,600);
+						_aux_projectile.setTarget(CameraManager.getCameraX() + FP.width,CameraManager.getCameraY() + FP.height/2);//P6
 						this.projectiles.push(_aux_projectile);
 						_aux_projectile = new Projectile(this.player.x + 60 , this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(800,0);
+						_aux_projectile.setTarget(CameraManager.getCameraX() + FP.width,CameraManager.getCameraY() + FP.height); //P7
 						this.projectiles.push(_aux_projectile);
 						_aux_projectile = new Projectile(this.player.x + 60 , this.player.y + 85, 1);
 						_aux_projectile.setRemote(true);
-						_aux_projectile.setTarget(800,600);
+						_aux_projectile.setTarget(CameraManager.getCameraX() + FP.width/2,CameraManager.getCameraY() + FP.height);//P8
 						this.projectiles.push(_aux_projectile);
-						
+						knifefx.play();
 					}
 				}
 			}
-			
-			
+			/* ACTUALIZACION DE ESTADO DE LA CAMARA */
 			CameraManager.setCameraConfig(player.x, player.y, 300, 400);
 			CameraManager.followCamera();
-			
+			/* ACTUALIZACION DE ESTADO DEL HUB (SCORE TEXT) */
 			_infotext.text = "Score:" + DataManager.getScore();
 			_usertext.text = DataManager.get_username();
 			_bordertext.x = CameraManager.getCameraX();
@@ -242,33 +250,31 @@ package gameworld
 			_infotext.y = _bordertext.y + 22;
 			_usertext.x = _bordertext.x + 20;
 			_usertext.y = _bordertext.y + 5;
-			
+			/* ACTUALIZACION DE ESTADO DEL HUB (LIFE BAR)*/
 			if (this.life_gui.length > player.getLife())
-				this.life_gui.pop();
-				
+					this.life_gui.pop();
+			if (this.life_gui.length < player.getLife())
+					this.life_gui.push(new Feather(200,200));
+			/* ACTUALIZACION DE ESTADO DEL HUB (SPECIAL BAR)*/
 			if (this.special_gui.length > player.get_blocks())
 				this.special_gui.pop();
-			
 			if (this.special_gui.length < player.get_blocks())
 				this.special_gui.push(new Feather(200,200,0));
-				
+			/* ACTUALIZACION DE ESTADO DEL HUB (POSICION BARs)*/	
 			for (var h:int = 0; h < this.life_gui.length ; h++) 
 			{
 				this.life_gui[h].x = _bordertext.x + 280 + (Feather.get_size() * h)
 				this.life_gui[h].y = _bordertext.y ;
 			}
-			
 			for (var g:int = 0; g < this.special_gui.length ; g++) 
 			{
-				this.special_gui[g].x = _bordertext.x + 280 + (Feather.get_size() * g)
-				this.special_gui[g].y = _bordertext.y + Feather.get_size();
+					this.special_gui[g].x = _bordertext.x + 280 + (Feather.get_size() * g)
+					this.special_gui[g].y = _bordertext.y + Feather.get_size();
 			}
-			
 			/* VINCULANDO ELEMENTOS AL WORLD */
 			super.update();
 			this.removeAll();
 			this.add(background);
-			this.add(_bordertext);
 			this.addList(projectiles);
 			this.addList(platforms);
 			this.addList(enemies);
@@ -276,36 +282,35 @@ package gameworld
 				this.add(enemies[j]._aura);
 			this.add(player);
 			this.add(player._shield);
+			if (!DataManager.isLevelWin()) {
+				this.add(_bordertext);
+				this.addList(life_gui);
+				this.addList(special_gui);
+			}
 			this.addGraphic(_infotext);
 			this.addGraphic(_usertext);
-			this.addList(life_gui);
-			this.addList(special_gui);
 			/* CONDICIONES DE INTERRUPCION DEL NIVEL */
 			if (DataManager.isLevelWin()) {
-				FP.world = new Credit();
+				if (musfx.playing)	musfx.stop();
+				if (!winfx.playing) winfx.play();
+				player.playAnimation("win");
+				_infotext.text = "Highscore x" + DataManager.getScore();
+				_infotext.size = 46;
+				_infotext.x = CameraManager.getCameraX() + 200;
+				_infotext.y = CameraManager.getCameraY() + 50;
+				_usertext.text = "Press Enter " + DataManager.get_username();
+				_usertext.x = CameraManager.getCameraX() + 300;
+				_usertext.y = CameraManager.getCameraY() + 100;
+				if (Input.check(Key.ENTER)) {
+					winfx.stop();
+					FP.world = new Credit();
+				}
 			}
-			
-			if (player.isDead()) {
+			if (player.isPlayerDeadEnd() || player.isReset()) {
 				DataManager.resetScore();
 				FP.world = new Level1();
-			}
-			
-			/*
-			if (player.isWin) this.add(signal);
-			
-			this.add(plataforma_a);
-			this.add(coin);
-			this.add(sol);
-			this.add(luna);
-			this.addList(planta1.partes);
-			this.addGraphic(info_text);
-			
-			/*
-			if (player.x > 780 && player.isWin) {
 				musfx.stop();
-				FP.world = new GameWorldN1();
 			}
-			*/
 			
 		}
 		

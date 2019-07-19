@@ -70,10 +70,11 @@ package gameclass
 				else
 					x += 500 * FP.elapsed * 1;
 			}
-			
-			if (CameraManager.getLimitX() > x ) {
+
+			if (x < CameraManager.getCameraX() || x > CameraManager.getLimitX()) 
 				destroy();
-			}
+			if (y < CameraManager.getCameraY() || y > CameraManager.getLimitY())
+				destroy();
 		
 		}
 		

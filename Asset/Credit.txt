@@ -1,1 +1,4 @@
-Konami
+Asset and Sound: All rights reserved for Konami.
+Sunset Revenge is a Fangame.
+Non commercial Project - Only for learning purpose.
+https://github.com/gastoncaminiti/SunsetRevenge.

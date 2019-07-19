@@ -20,14 +20,21 @@ package gameclass
 		private var _clockfire:Number;
 		private var _pointshoot:Number;
 		private var _pointmelee:Number;
+		private var _preventaurax:Number;
+		private var _preventauray:Number;
+		private var _can_shootdown:Boolean;
+		
 		private var SIZEIMG:Number = 180;
 
 		public function Enemy(new_x:Number, new_y:Number,NEW_IMG:Class, aura_x:Number = 200, aura_y:Number = 200, new_life:Number = 3,new_points:Number = 100, new_pointm:Number = 300) 
 		{
 			super(new_x, new_y, NEW_IMG, SIZEIMG, SIZEIMG, "Enemy");
+			
 			_aura = new Entity(x, y);
-			_aura.setHitbox(aura_x, aura_y,aura_x/2,0);
+			_aura.setHitbox(aura_x, aura_y,aura_x - SIZEIMG/2,0);
 			_aura.type = "aura";
+			_preventaurax = aura_x;
+			_preventauray = aura_y;
 			_shoot = false;
 			_firerate = 18;
 			_clockfire = 0;
@@ -69,6 +76,10 @@ package gameclass
 			setLife(getLife() - 1);
 		}
 		
+		public function critical_hurt():void {
+			setLife(getLife() - 3);
+		}
+		
 		public function isHurt():void {
 			var p: Projectile = isTouchProjectile("Knife");
 			if (p) {
@@ -76,16 +87,25 @@ package gameclass
 				p.destroy();
 				DataManager.addScore(_pointshoot);
 			}
-			
 			if (collide("shield", x, y)) {
-				hurt();
+				critical_hurt();
 				DataManager.addScore(_pointmelee);
+				var o:Array = new Array();
+				FP.world.getClass(Player, o);
+				o[0].addlife();
 			}
 		}
 		
 		public function update_aura():void {
 			_aura.x = x;
 			_aura.y = y;
+		}
+		
+		public function flip_aura():void {
+			if (getFlip())
+				_aura.setHitbox(_preventaurax, _preventauray, 0 - SIZEIMG/2, 0);
+			else 
+				_aura.setHitbox(_preventaurax, _preventauray,_preventaurax - SIZEIMG/2,0);
 		}
 		
 		public function get_clock():Number {
@@ -112,5 +132,14 @@ package gameclass
 			collidable = false;
 			_aura.collidable = false;
 		}
+		
+		public function isShootdownStatus():Boolean {
+			return _can_shootdown;
+		}
+		
+		public function setShootdownStatus(new_status:Boolean):void {
+			_can_shootdown = new_status;
+		}
+		
 	}
 }

@@ -12,7 +12,6 @@ package gameclass
 	
 	public class Player extends gameclass.People
 	{
-				
 		[Embed(source = "../asset/img/Player.png")]
 		private const PLAYER_ANIM:Class;
 		
@@ -25,16 +24,15 @@ package gameclass
 		private var _currentblockcount:Number;
 		
 		private var MARGIN_LIMIT:int = 20;
-		private var PLAYER_SIZE:int = 170;
-		private var PLAYER_READY_LIFE:int = 3;
+		public 	var PLAYER_SIZE:int = 170;
+		private var PLAYER_READY_LIFE:int = 5;
 		private var PLAYER_FIRERATE:int = 16;
 		private var PLAYER_BLOCK_LIMIT:int = 2;
 		private var PLAYER_SPECIAL_NEED:int = 3;
 		private var PLAYER_MOVE_SPEED:int = 600;
 		private var PLAYER_JUMP_FORCE:int = 250;
-		private var PLAYER_GRAVITY:int = 10;
+		private var PLAYER_GRAVITY:int = 8;
 		
-	
 		public function Player(px:Number = 0, py:Number = 0) 
 		{
 			super(px, py, PLAYER_ANIM, PLAYER_SIZE, PLAYER_SIZE, "Player");
@@ -47,8 +45,8 @@ package gameclass
 			addAnimation("range_atack", [0, 5, 6], 12, false);
 			addAnimation("range_jump_atack", [20, 21], 10, false);
 			addAnimation("special_atack", [8,9,10,11,8,9,10,11], 20, false);
-			addAnimation("dead", [12,13], 0.5, false);
-			addAnimation("win", [15,16], 8, false);
+			addAnimation("dead", [12,13,13,13], 2, false);
+			addAnimation("win", [18,19], 6, true);
 			playAnimation("stand");
 			setFlip(true);
 			_shield = new Entity(x, y);
@@ -76,8 +74,7 @@ package gameclass
 			else
 				return false;
 		}
-		
-	
+
 		public function untouch_limit_left():Boolean {
 			return x > CameraManager.MAP_LIMIT_X_MIN - PLAYER_SIZE/2 + MARGIN_LIMIT ;
 		}
@@ -133,7 +130,7 @@ package gameclass
 		
 		public function crouch():void {
 			_shield.collidable = false;
-			setHitbox(40, 50, -60,-100);
+			setHitbox(40, 70, -60,-100);
 			playAnimation("crouch");
 		}
 
@@ -166,7 +163,11 @@ package gameclass
 		}
 		
 		public function hurt():void {
-			setLife(getLife() - 1);
+			if(getLife() != 0) setLife(getLife() - 1);
+		}
+		
+		public function addlife():void {
+			setLife(getLife() + 1);
 		}
 		
 		public function isHurt():void {
@@ -190,11 +191,23 @@ package gameclass
 			if (p) {
 				setGravity(false);
 				setJump(true);
-			}
+				y = p.y - PLAYER_SIZE *.95;
+				}
 			else 
 				setGravity(true);
 		}
 		
+		public function isReset():Boolean {
+			var p:gameclass.Platform = isTouchFloor("Reset");
+			if (p) return true; else return false;
+		}
+		
+		public function isPlayerDeadEnd():Boolean {
+			if (isAnimation("dead") && endAnimation())
+				return true;
+			else
+				return false;
+		}
 		override public function update():void
 		{	
 			_shield.x = x;
@@ -219,17 +232,17 @@ package gameclass
 			}
 			
 			if (isDead()) {
-				playAnimation("dead");
-				if (collidable) {
-					x -= 20;
-					y -= 5;
-					collidable = false;
-					_shield.collidable = false;
-				}
+				if (!isAnimation("dead")) playAnimation("dead");
+				setHitbox(40, 70, -60,-100);
 			}
 			
 			if (isAnimation("range_atack") && endAnimation())
 				playAnimation("stand");
+				
+			if (isAnimation("melee_atack") || isAnimation("block"))
+				_shield.collidable = true;
+			else
+				_shield.collidable = false;
 		}
 	}
 }
